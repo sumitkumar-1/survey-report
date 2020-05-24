@@ -25,3 +25,13 @@ ionic cap sync
 ionic cap open ios => (requires IOS)
 
 ionic cap open android
+
+# DataBase Support
+npm install @ionic-native/sqlite
+
+ionic cordova plugin add cordova-sqlite-storage
+
+npm install @ionic-native/sqlite-porter
+
+ionic cordova plugin add uk.co.workingedge.cordova.plugin.sqliteporter
+
