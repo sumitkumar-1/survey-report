@@ -26,7 +26,6 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [ProjectsPage, PopmenuComponent],
-  providers: [MediaService, DbService, ProjectService]
+  declarations: [ProjectsPage, PopmenuComponent]
 })
 export class ProjectsPageModule {}
