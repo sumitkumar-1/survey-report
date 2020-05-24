@@ -1,3 +1,6 @@
+import { MediaService } from './services/media.service';
+import { DbService } from './services/db.service';
+import { ProjectService } from './services/project.service';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
@@ -34,9 +37,12 @@ import { NotificationsComponent } from './components/notifications/notifications
   providers: [
     StatusBar,
     SplashScreen,
+    MediaService,
+    DbService,
+    ProjectService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
 })
 
-export class AppModule {}
+export class AppModule { }

@@ -1,3 +1,6 @@
+import { ProjectService } from './../../services/project.service';
+import { DbService } from './../../services/db.service';
+import { MediaService } from './../../services/media.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -23,6 +26,7 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [ProjectsPage, PopmenuComponent]
+  declarations: [ProjectsPage, PopmenuComponent],
+  providers: [MediaService, DbService, ProjectService]
 })
 export class ProjectsPageModule {}

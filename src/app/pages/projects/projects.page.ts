@@ -12,6 +12,7 @@ import { SearchFilterPage } from '../modal/search-filter/search-filter.page';
 import { ImagePage } from '../modal/image/image.page';
 // Call notifications test by Popover and Custom Component.
 import { NotificationsComponent } from '../../components/notifications/notifications.component';
+import { MediaService } from './../../services/media.service';
 
 @Component({
   selector: 'projects',
@@ -29,7 +30,8 @@ export class ProjectsPage {
     public popoverCtrl: PopoverController,
     public alertCtrl: AlertController,
     public modalCtrl: ModalController,
-    public toastCtrl: ToastController
+    public toastCtrl: ToastController,
+    public mediaService: MediaService
   ) {
 
   }
