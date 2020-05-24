@@ -8,17 +8,17 @@ import {
   ModalController } from '@ionic/angular';
 
 // Modals
-import { SearchFilterPage } from '../../pages/modal/search-filter/search-filter.page';
-import { ImagePage } from './../modal/image/image.page';
+import { SearchFilterPage } from '../modal/search-filter/search-filter.page';
+import { ImagePage } from '../modal/image/image.page';
 // Call notifications test by Popover and Custom Component.
-import { NotificationsComponent } from './../../components/notifications/notifications.component';
+import { NotificationsComponent } from '../../components/notifications/notifications.component';
 
 @Component({
-  selector: 'app-home-results',
-  templateUrl: './home-results.page.html',
-  styleUrls: ['./home-results.page.scss']
+  selector: 'projects',
+  templateUrl: './projects.page.html',
+  styleUrls: ['./projects.page.scss']
 })
-export class HomeResultsPage {
+export class ProjectsPage {
   searchKey = '';
   yourLocation = '123 Test Street';
   themeCover = 'assets/img/ionic4-Start-Theme-cover.jpg';
