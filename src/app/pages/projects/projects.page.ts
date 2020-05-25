@@ -1,3 +1,4 @@
+import { Project } from './../../interfaces/project';
 import { Component } from '@angular/core';
 import {
   NavController,
@@ -14,6 +15,7 @@ import { ImagePage } from '../modal/image/image.page';
 // Call notifications test by Popover and Custom Component.
 import { NotificationsComponent } from '../../components/notifications/notifications.component';
 import { MediaService } from './../../services/media.service';
+import { ExcelService } from './../../services/excel.service';
 
 @Component({
   selector: 'projects',
@@ -35,7 +37,9 @@ export class ProjectsPage {
     public modalCtrl: ModalController,
     public toastCtrl: ToastController,
     // public mediaService: MediaService
+    public excelService: ExcelService
   ) {
+    this.excelService.checkready();
     this.images = [
       'assets/img/projects/thumb/image1.jpg',
       'assets/img/projects/thumb/image2.jpg',

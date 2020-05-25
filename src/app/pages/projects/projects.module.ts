@@ -1,6 +1,3 @@
-import { ProjectService } from './../../services/project.service';
-import { DbService } from './../../services/db.service';
-import { MediaService } from './../../services/media.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -10,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { PopmenuComponent } from '../../components/popmenu/popmenu.component';
 
 import { ProjectsPage } from './projects.page';
+import { ExcelService } from 'src/app/services/excel.service';
 
 const routes: Routes = [
   {
@@ -26,6 +24,6 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [ProjectsPage, PopmenuComponent]
+  declarations: [ProjectsPage, PopmenuComponent],
 })
 export class ProjectsPageModule {}
