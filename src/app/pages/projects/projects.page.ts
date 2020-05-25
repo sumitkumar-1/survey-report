@@ -5,7 +5,8 @@ import {
   MenuController,
   ToastController,
   PopoverController,
-  ModalController } from '@ionic/angular';
+  ModalController
+} from '@ionic/angular';
 
 // Modals
 import { SearchFilterPage } from '../modal/search-filter/search-filter.page';
@@ -23,7 +24,9 @@ export class ProjectsPage {
   searchKey = '';
   yourLocation = '123 Test Street';
   themeCover = 'assets/img/ionic4-Start-Theme-cover.jpg';
-
+  public _projects: any;
+  public selectedImage: string;
+  public images: string[];
   constructor(
     public navCtrl: NavController,
     public menuCtrl: MenuController,
@@ -31,9 +34,92 @@ export class ProjectsPage {
     public alertCtrl: AlertController,
     public modalCtrl: ModalController,
     public toastCtrl: ToastController,
-    public mediaService: MediaService
+    // public mediaService: MediaService
   ) {
-
+    this.images = [
+      'assets/img/projects/thumb/image1.jpg',
+      'assets/img/projects/thumb/image2.jpg',
+      'assets/img/projects/thumb/image3.jpg',
+      'assets/img/projects/thumb/image4.jpg',
+      'assets/img/projects/thumb/image5.jpg',
+      'assets/img/projects/thumb/image6.jpg',
+      'assets/img/projects/thumb/image7.jpg'
+    ];
+    this.selectedImage = this.images[Math.floor(Math.random() * this.images.length)];
+    // set sample data
+    this._projects =
+      [
+        {
+          id: 1,
+          projectname: 'WEBS-VCM',
+          market: 'Bangalore, India',
+          siteid: 'site1',
+          sitename: 'sitename1',
+          contractor: 'cname1',
+          startdate: '24/05/2020',
+          installation: 'inst',
+          onsitetech: 'onsite',
+          additionalnote: 'addnote',
+          sourcelogo: 'srclogo',
+          targetlogo: 'trgtlogo'
+        },
+        {
+          id: 2,
+          projectname: 'SPDE',
+          market: 'San Francisco, California',
+          siteid: 'site12',
+          sitename: 'sitename12',
+          contractor: 'cname12',
+          startdate: '25/05/2020',
+          installation: 'inst2',
+          onsitetech: 'onsite2',
+          additionalnote: 'addnote2',
+          sourcelogo: 'srclogo2',
+          targetlogo: 'trgtlogo2'
+        },
+        {
+          id: 3,
+          projectname: 'BT MARIGOLD E2E',
+          market: 'London, England',
+          siteid: 'site13',
+          sitename: 'sitename13',
+          contractor: 'cname13',
+          startdate: '26/05/2020',
+          installation: 'inst3',
+          onsitetech: 'onsite3',
+          additionalnote: 'addnote3',
+          sourcelogo: 'srclogo3',
+          targetlogo: 'trgtlogo3'
+        },
+        {
+          id: 4,
+          projectname: 'SINEMA E',
+          market: 'Brazil, South America',
+          siteid: 'site14',
+          sitename: 'sitename14',
+          contractor: 'cname14',
+          startdate: '27/05/2020',
+          installation: 'inst4',
+          onsitetech: 'onsite4',
+          additionalnote: 'addnote4',
+          sourcelogo: 'srclogo4',
+          targetlogo: 'trgtlogo4'
+        },
+        {
+          id: 5,
+          projectname: 'INTERNET EDI',
+          market: 'Sudan, North Africa',
+          siteid: 'site15',
+          sitename: 'sitename15',
+          contractor: 'cname15',
+          startdate: '28/05/2020',
+          installation: 'inst5',
+          onsitetech: 'onsite5',
+          additionalnote: 'addnote5',
+          sourcelogo: 'srclogo5',
+          targetlogo: 'trgtlogo5'
+        }
+      ];
   }
 
   ionViewWillEnter() {
@@ -83,7 +169,7 @@ export class ProjectsPage {
     changeLocation.present();
   }
 
-  async searchFilter () {
+  async searchFilter() {
     const modal = await this.modalCtrl.create({
       component: SearchFilterPage
     });
@@ -106,6 +192,11 @@ export class ProjectsPage {
       showBackdrop: true
     });
     return await popover.present();
+  }
+
+  // view trip detail
+  async viewDetail(id) {
+    // this.nav.push(ProjectDetailPage, {id: id});
   }
 
 }

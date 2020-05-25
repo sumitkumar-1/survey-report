@@ -4,9 +4,9 @@
       <ion-menu-button color="secondary"></ion-menu-button>
     </ion-buttons>
     <ion-title>
-        <ion-text color="light">
-          <ion-text color="light" class="fw700">Ionic 4 Start</ion-text>
-        </ion-text>
+      <ion-text color="light">
+        <ion-text color="light" class="fw700">Projects</ion-text>
+      </ion-text>
     </ion-title>
     <ion-buttons slot="end">
       <ion-button size="small" shape="round" color="medium" (click)="notifications()">
@@ -15,17 +15,17 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-  <ion-toolbar color="dark">
+  <!-- <ion-toolbar color="dark">
     <ion-searchbar [(ngModel)]="searchKey"></ion-searchbar>
     <ion-buttons slot="end">
       <ion-button size="small" shape="round" color="medium" (click)="searchFilter()">
         <ion-icon name="options"></ion-icon>
       </ion-button>
     </ion-buttons>
-  </ion-toolbar>
+  </ion-toolbar> -->
 </ion-header>
 
-<ion-content>
+<!-- <ion-content>
   <ion-card no-margin class="no-radius">
     <ion-item lines="none" color="medium">
       <ion-label>
@@ -63,3 +63,40 @@
   </ion-fab>
 </ion-content>
   
+</ion-content> -->
+<!-- trip -->
+<ion-content padding class="projs detail-bg">
+  <!--list of trips-->
+  <div class="proj card" *ngFor="let project of _projects; let i = index" tappable (click)="viewDetail(project.id)"
+    margin-bottom>
+    <div class="background border-bottom" [ngStyle]="{'background-image': 'url(' + images[i] + ')'}">
+      <div class="background-filter rlt">
+        <div class="align-top-left">
+          <ion-fab-button size="small">
+            <ion-icon name="information-circle"></ion-icon>
+          </ion-fab-button>
+        </div>
+        <div class="align-bottom" padding-left padding-right>
+          <h6 class="pull-left text-white margin-left-3" ion-text>{{ project.projectname }}</h6>
+          <h6 class="pull-right text-white margin-right-3" ion-text>{{ project.sitename }}</h6>
+          <div class="clear"></div>
+        </div>
+      </div>
+    </div>
+    <div class="padding-sm primary-bg">
+      <ion-icon name="time" class="text-white"></ion-icon>
+      <span ion-text class="text-white text-font-12">{{ project.startdate }}</span>
+      <span class="pull-right" ion-text color="light"><strong>{{ project.market }}</strong></span>
+    </div>
+  </div>
+  <!-- <ion-fab vertical="bottom" horizontal="center" slot="fixed" class="icon-add">
+    <button ion-fab color="primary">
+      <ion-icon name="add-circle" style="font-size: 4rem;"></ion-icon>
+    </button>
+  </ion-fab> -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" style="margin-right: 2%;">
+    <ion-fab-button>
+      <ion-icon name="add-circle" style="font-size: 2rem;"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

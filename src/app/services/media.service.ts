@@ -34,7 +34,7 @@ export class MediaService {
     console.log(base64Data);
     // store (projectid, type, base64Data)
     const projectasset: ProjectAssets = { id: null , projectid: projectid, assettype: type, assetpath: base64Data };
-    this.projectservice.addProjectAssets(projectasset);
+    // this.projectservice.addProjectAssets(projectasset);
 
   }
 
