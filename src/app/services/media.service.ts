@@ -6,19 +6,16 @@ import { ProjectAssets } from '../interfaces/projectassets';
 
 const { Camera, Filesystem, Storage } = Plugins;
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class MediaService {
-
-  private platform: Platform;
-  private projectservice: ProjectService;
-
-  constructor(platform: Platform, projectservice: ProjectService) {
+  constructor(private platform: Platform, private projectservice: ProjectService) {
     this.platform = platform;
     this.projectservice = projectservice;
   }
 
+  public test() {
+    console.log('test');
+  }
   /* call this with type=PRE/POST/CT */
 
   public async addNewAsset(projectid: number, type: string) {

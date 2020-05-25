@@ -16,6 +16,7 @@ import { ImagePage } from '../modal/image/image.page';
 import { NotificationsComponent } from '../../components/notifications/notifications.component';
 import { MediaService } from './../../services/media.service';
 import { ExcelService } from './../../services/excel.service';
+import { ProjectInfoPage } from '../modal/project-info/project-info.page';
 
 @Component({
   selector: 'projects',
@@ -36,10 +37,11 @@ export class ProjectsPage {
     public alertCtrl: AlertController,
     public modalCtrl: ModalController,
     public toastCtrl: ToastController,
-    // public mediaService: MediaService
+    public mediaService: MediaService,
     public excelService: ExcelService
   ) {
     this.excelService.checkready();
+    this.mediaService.test();
     this.images = [
       'assets/img/projects/thumb/image1.jpg',
       'assets/img/projects/thumb/image2.jpg',
@@ -179,7 +181,13 @@ export class ProjectsPage {
     });
     return await modal.present();
   }
-
+  async projectInfo() {
+    const modal = await this.modalCtrl.create({
+      // component: SearchFilterPage
+      component: ProjectInfoPage
+    });
+    return await modal.present();
+  }
   async presentImage(image: any) {
     const modal = await this.modalCtrl.create({
       component: ImagePage,

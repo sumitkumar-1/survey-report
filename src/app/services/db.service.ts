@@ -5,9 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class DbService {
 
   private storage: SQLiteObject;

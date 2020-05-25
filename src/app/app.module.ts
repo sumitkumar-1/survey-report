@@ -1,6 +1,3 @@
-import { MediaService } from './services/media.service';
-import { DbService } from './services/db.service';
-import { ProjectService } from './services/project.service';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
@@ -22,6 +19,12 @@ import { SearchFilterPageModule } from './pages/modal/search-filter/search-filte
 import { NotificationsComponent } from './components/notifications/notifications.component';
 import { ExcelService } from './services/excel.service';
 import { File } from '@ionic-native/file/ngx';
+import { ProjectInfoPageModule } from './pages/modal/project-info/project-info.module';
+import { MediaService } from './services/media.service';
+import { ProjectService } from './services/project.service';
+import { DbService } from './services/db.service';
+import { SQLite } from '@ionic-native/sqlite/ngx';
+import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
 
 
 @NgModule({
@@ -33,7 +36,8 @@ import { File } from '@ionic-native/file/ngx';
     AppRoutingModule,
     HttpClientModule,
     ImagePageModule,
-    SearchFilterPageModule
+    SearchFilterPageModule,
+    ProjectInfoPageModule
   ],
   entryComponents: [NotificationsComponent],
   providers: [
@@ -41,6 +45,12 @@ import { File } from '@ionic-native/file/ngx';
     SplashScreen,
     ExcelService,
     File,
+    Platform,
+    MediaService,
+    ProjectService,
+    DbService,
+    SQLite,
+    SQLitePorter,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

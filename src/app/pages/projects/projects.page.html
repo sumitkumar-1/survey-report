@@ -72,7 +72,7 @@
     <div class="background border-bottom" [ngStyle]="{'background-image': 'url(' + images[i] + ')'}">
       <div class="background-filter rlt">
         <div class="align-top-left">
-          <ion-fab-button size="small">
+          <ion-fab-button size="small" (click)="projectInfo()">
             <ion-icon name="information-circle"></ion-icon>
           </ion-fab-button>
         </div>

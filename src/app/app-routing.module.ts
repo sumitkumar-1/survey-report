@@ -8,6 +8,8 @@ const routes: Routes = [
   { path: 'settings', loadChildren: './pages/settings/settings.module#SettingsPageModule' },
   { path: 'edit-profile', loadChildren: './pages/edit-profile/edit-profile.module#EditProfilePageModule' },
   { path: 'projects', loadChildren: './pages/projects/projects.module#ProjectsPageModule' },
+  { path: 'project-info', loadChildren: './pages/modal/project-info/project-info.module#ProjectInfoPageModule' },
+  { path: 'create-project', loadChildren: './pages/create-project/create-project.module#CreateProjectPageModule' }
 ];
 
 @NgModule({
