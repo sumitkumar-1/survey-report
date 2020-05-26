@@ -23,8 +23,8 @@ export class ExcelService {
 
   public async checkready() {
     await this.platform.ready();
-    console.log('excel service');
-    console.log('Sumit ' + this.file.dataDirectory);
+    // console.log('excel service');
+    // console.log('Sumit ' + this.file.dataDirectory);
     this.destpath = {
       android: this.file.applicationStorageDirectory + 'sitesurvey/', ios: this.file.documentsDirectory + 'sitesurvey/',
       desktop: this.file.dataDirectory + 'sitesurvey/'

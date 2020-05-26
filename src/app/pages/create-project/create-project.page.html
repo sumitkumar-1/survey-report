@@ -1,6 +1,9 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>create-project</ion-title>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="projects"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Create Project</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -25,126 +28,119 @@
       </ion-label>
       <ion-input color="secondary" type="text" formControlName="market"></ion-input>
     </ion-item>
-    <p ion-text class="text08" *ngIf="onLoginForm.get('email').touched && onLoginForm.get('email').hasError('required')">
+    <p ion-text class="text08" *ngIf="onProjectCreateForm.get('market').touched && onProjectCreateForm.get('market').hasError('required')">
       <ion-text color="warning">
         Required Field
       </ion-text>
     </p>
     <ion-item no-padding class="animated fadeInUp">
       <ion-label position="floating">
-        <ion-icon name="mail" item-start></ion-icon>
-        SiteId
+        <!-- <ion-icon name="mail" item-start></ion-icon> -->
+        Site ID
       </ion-label>
-      <ion-input color="secondary" type="email" formControlName="email"></ion-input>
+      <ion-input color="secondary" type="text" formControlName="siteid"></ion-input>
     </ion-item>
-    <p ion-text class="text08" *ngIf="onLoginForm.get('email').touched && onLoginForm.get('email').hasError('required')">
+    <p ion-text class="text08" *ngIf="onProjectCreateForm.get('siteid').touched && onProjectCreateForm.get('siteid').hasError('required')">
       <ion-text color="warning">
         Required Field
       </ion-text>
     </p>
     <ion-item no-padding class="animated fadeInUp">
       <ion-label position="floating">
-        <ion-icon name="mail" item-start></ion-icon>
+        <!-- <ion-icon name="mail" item-start></ion-icon> -->
         Site Name
       </ion-label>
-      <ion-input color="secondary" type="email" formControlName="email"></ion-input>
+      <ion-input color="secondary" type="text" formControlName="sitename"></ion-input>
     </ion-item>
-    <p ion-text class="text08" *ngIf="onLoginForm.get('email').touched && onLoginForm.get('email').hasError('required')">
+    <p ion-text class="text08" *ngIf="onProjectCreateForm.get('sitename').touched && onProjectCreateForm.get('sitename').hasError('required')">
       <ion-text color="warning">
         Required Field
       </ion-text>
     </p>
     <ion-item no-padding class="animated fadeInUp">
       <ion-label position="floating">
-        <ion-icon name="mail" item-start></ion-icon>
+        <!-- <ion-icon name="mail" item-start></ion-icon> -->
         Contractor
       </ion-label>
-      <ion-input color="secondary" type="email" formControlName="email"></ion-input>
+      <ion-input color="secondary" type="text" formControlName="contractor"></ion-input>
     </ion-item>
-    <p ion-text class="text08" *ngIf="onLoginForm.get('email').touched && onLoginForm.get('email').hasError('required')">
+    <p ion-text class="text08" *ngIf="onProjectCreateForm.get('contractor').touched && onProjectCreateForm.get('contractor').hasError('required')">
       <ion-text color="warning">
         Required Field
       </ion-text>
     </p>
     <ion-item no-padding class="animated fadeInUp">
       <ion-label position="floating">
-        <ion-icon name="mail" item-start></ion-icon>
-        startdate
+        <!-- <ion-icon name="mail" item-start></ion-icon> -->
+        Start Date
       </ion-label>
-      <ion-input color="secondary" type="email" formControlName="email"></ion-input>
+      <ion-input color="secondary" type="text" formControlName="startdate"></ion-input>
     </ion-item>
-    <p ion-text class="text08" *ngIf="onLoginForm.get('email').touched && onLoginForm.get('email').hasError('required')">
+    <p ion-text class="text08" *ngIf="onProjectCreateForm.get('startdate').touched && onProjectCreateForm.get('startdate').hasError('required')">
       <ion-text color="warning">
         Required Field
       </ion-text>
     </p>
     <ion-item no-padding class="animated fadeInUp">
       <ion-label position="floating">
-        <ion-icon name="mail" item-start></ion-icon>
+        <!-- <ion-icon name="mail" item-start></ion-icon> -->
         Installation
       </ion-label>
-      <ion-input color="secondary" type="email" formControlName="email"></ion-input>
+      <ion-input color="secondary" type="text" formControlName="installation"></ion-input>
     </ion-item>
-    <p ion-text class="text08" *ngIf="onLoginForm.get('email').touched && onLoginForm.get('email').hasError('required')">
+    <p ion-text class="text08" *ngIf="onProjectCreateForm.get('installation').touched && onProjectCreateForm.get('installation').hasError('required')">
       <ion-text color="warning">
         Required Field
       </ion-text>
     </p>
     <ion-item no-padding class="animated fadeInUp">
       <ion-label position="floating">
-        <ion-icon name="mail" item-start></ion-icon>
+        <!-- <ion-icon name="mail" item-start></ion-icon> -->
         Onsitetech
       </ion-label>
-      <ion-input color="secondary" type="email" formControlName="email"></ion-input>
+      <ion-input color="secondary" type="text" formControlName="onsitetech"></ion-input>
     </ion-item>
-    <p ion-text class="text08" *ngIf="onLoginForm.get('email').touched && onLoginForm.get('email').hasError('required')">
+    <p ion-text class="text08" *ngIf="onProjectCreateForm.get('onsitetech').touched && onProjectCreateForm.get('onsitetech').hasError('required')">
       <ion-text color="warning">
         Required Field
       </ion-text>
     </p>
     <ion-item no-padding class="animated fadeInUp">
       <ion-label position="floating">
-        <ion-icon name="mail" item-start></ion-icon>
+        <!-- <ion-icon name="mail" item-start></ion-icon> -->
         Additionalnotes
       </ion-label>
-      <ion-input color="secondary" type="email" formControlName="email"></ion-input>
+      <ion-input color="secondary" type="text"></ion-input>
     </ion-item>
     <ion-item no-padding class="animated fadeInUp">
       <ion-label position="floating">
-        <ion-icon name="mail" item-start></ion-icon>
-        sourcelogopath
+        <!-- <ion-icon name="mail" item-start></ion-icon> -->
+        Sourcelogopath
       </ion-label>
-      <ion-input color="secondary" type="email" formControlName="email"></ion-input>
+      <ion-input color="secondary" type="text" formControlName="sourcelogopath"></ion-input>
     </ion-item>
-    <p ion-text class="text08" *ngIf="onLoginForm.get('email').touched && onLoginForm.get('email').hasError('required')">
+    <p ion-text class="text08" *ngIf="onProjectCreateForm.get('sourcelogopath').touched && onProjectCreateForm.get('sourcelogopath').hasError('required')">
       <ion-text color="warning">
         Required Field
       </ion-text>
     </p>
     <ion-item no-padding class="animated fadeInUp">
       <ion-label position="floating">
-        <ion-icon name="mail" item-start></ion-icon>
+        <!-- <ion-icon name="mail" item-start></ion-icon> -->
         Targetlogopath
       </ion-label>
-      <ion-input color="secondary" type="email" formControlName="email"></ion-input>
+      <ion-input color="secondary" type="text" formControlName="targetlogopath"></ion-input>
     </ion-item>
-    <p ion-text class="text08" *ngIf="onLoginForm.get('email').touched && onLoginForm.get('email').hasError('required')">
+    <p ion-text class="text08" *ngIf="onProjectCreateForm.get('targetlogopath').touched && onProjectCreateForm.get('targetlogopath').hasError('required')">
       <ion-text color="warning">
         Required Field
       </ion-text>
     </p>
-
-    <ion-item no-padding class="animated fadeInUp">
-      <ion-label position="floating">
-        <ion-icon name="lock" item-start></ion-icon>
-        Password
-      </ion-label>
-      <ion-input color="secondary" type="password" formControlName="password"></ion-input>
-    </ion-item>
-    <p ion-text color="warning" class="text08" *ngIf="onLoginForm.get('password').touched && onLoginForm.get('password').hasError('required')">
-      <ion-text color="warning">
-        Required Field
-      </ion-text>
-      </p>
   </form>
+  <!-- <div>
+    <ion-button icon-left size="medium" expand="full" shape="round" color="dark" (click)="goToHome()" [disabled]="!onProjectCreateForm.valid" tappable>
+      <ion-icon name="log-in"></ion-icon>
+      Create
+    </ion-button>
+  </div> -->
 </ion-content>

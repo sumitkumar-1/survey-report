@@ -13,10 +13,34 @@ export class CreateProjectPage implements OnInit {
 
   ngOnInit() {
     this.onProjectCreateForm = this.formBuilder.group({
-      'email': [null, Validators.compose([
+      'name': [null, Validators.compose([
         Validators.required
       ])],
-      'password': [null, Validators.compose([
+      'market': [null, Validators.compose([
+        Validators.required
+      ])],
+      'siteid': [null, Validators.compose([
+        Validators.required
+      ])],
+      'sitename': [null, Validators.compose([
+        Validators.required
+      ])],
+      'contractor': [null, Validators.compose([
+        Validators.required
+      ])],
+      'startdate': [null, Validators.compose([
+        Validators.required
+      ])],
+      'installation': [null, Validators.compose([
+        Validators.required
+      ])],
+      'onsitetech': [null, Validators.compose([
+        Validators.required
+      ])],
+      'sourcelogopath': [null, Validators.compose([
+        Validators.required
+      ])],
+      'targetlogopath': [null, Validators.compose([
         Validators.required
       ])]
     });

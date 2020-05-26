@@ -14,7 +14,6 @@ import { SearchFilterPage } from '../modal/search-filter/search-filter.page';
 import { ImagePage } from '../modal/image/image.page';
 // Call notifications test by Popover and Custom Component.
 import { NotificationsComponent } from '../../components/notifications/notifications.component';
-import { MediaService } from './../../services/media.service';
 import { ExcelService } from './../../services/excel.service';
 import { ProjectInfoPage } from '../modal/project-info/project-info.page';
 
@@ -37,11 +36,9 @@ export class ProjectsPage {
     public alertCtrl: AlertController,
     public modalCtrl: ModalController,
     public toastCtrl: ToastController,
-    public mediaService: MediaService,
     public excelService: ExcelService
   ) {
     this.excelService.checkready();
-    this.mediaService.test();
     this.images = [
       'assets/img/projects/thumb/image1.jpg',
       'assets/img/projects/thumb/image2.jpg',
@@ -209,6 +206,9 @@ export class ProjectsPage {
   // view trip detail
   async viewDetail(id) {
     // this.nav.push(ProjectDetailPage, {id: id});
+  }
+  goToCreateProject() {
+    this.navCtrl.navigateRoot('/create-project');
   }
 
 }

@@ -12,10 +12,6 @@ export class MediaService {
     this.platform = platform;
     this.projectservice = projectservice;
   }
-
-  public test() {
-    console.log('test');
-  }
   /* call this with type=PRE/POST/CT */
 
   public async addNewAsset(projectid: number, type: string) {
