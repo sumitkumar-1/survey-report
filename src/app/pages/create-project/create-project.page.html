@@ -74,7 +74,8 @@
         <!-- <ion-icon name="mail" item-start></ion-icon> -->
         Start Date
       </ion-label>
-      <ion-input color="secondary" type="text" formControlName="startdate"></ion-input>
+      <ion-datetime displayFormat="MMM DD, YYYY" color="secondary" type="text" formControlName="startdate"></ion-datetime>
+      <!-- <ion-input color="secondary" type="text" formControlName="startdate"></ion-input> -->
     </ion-item>
     <p ion-text class="text08" *ngIf="onProjectCreateForm.get('startdate').touched && onProjectCreateForm.get('startdate').hasError('required')">
       <ion-text color="warning">
@@ -110,7 +111,7 @@
         <!-- <ion-icon name="mail" item-start></ion-icon> -->
         Additionalnotes
       </ion-label>
-      <ion-input color="secondary" type="text"></ion-input>
+      <ion-input color="secondary" type="text" formControlName="additionalnotes"></ion-input>
     </ion-item>
     <ion-item no-padding class="animated fadeInUp">
       <ion-label position="floating">
@@ -137,10 +138,10 @@
       </ion-text>
     </p>
   </form>
-  <!-- <div>
-    <ion-button icon-left size="medium" expand="full" shape="round" color="dark" (click)="goToHome()" [disabled]="!onProjectCreateForm.valid" tappable>
+  <div class="mar-top5">
+    <ion-button icon-left size="medium" expand="full" shape="round" color="dark" [disabled]="!onProjectCreateForm.valid" (click)="onCreate()" tappable>
       <ion-icon name="log-in"></ion-icon>
       Create
     </ion-button>
-  </div> -->
+  </div>
 </ion-content>
