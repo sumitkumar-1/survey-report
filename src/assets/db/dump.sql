@@ -1,14 +1,14 @@
 CREATE TABLE IF NOT EXISTS pm_projects (
-	id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
-	projectname TEXT NOT NULL UNIQUE,
-	market TEXT NOT NULL UNIQUE,
-	siteid TEXT NOT NULL UNIQUE,
-	sitename TEXT NOT NULL UNIQUE,
-	contractor TEXT NOT NULL UNIQUE,
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	projectname TEXT NOT NULL,
+	market TEXT NOT NULL,
+	siteid TEXT NOT NULL,
+	sitename TEXT NOT NULL,
+	contractor TEXT NOT NULL,
 	startdate Date NOT NULL,
-	installation TEXT NOT NULL UNIQUE,
-	onsitetech TEXT NOT NULL UNIQUE,
-	additionalnotes TEXT NOT NULL UNIQUE,
+	installation TEXT NOT NULL,
+	onsitetech TEXT NOT NULL,
+	additionalnotes TEXT NOT NULL,
 	sourcelogopath TEXT NOT NULL,
 	targetlogopath TEXT NOT NULL
 );

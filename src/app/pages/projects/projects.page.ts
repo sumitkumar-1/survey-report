@@ -16,6 +16,7 @@ import { ImagePage } from '../modal/image/image.page';
 import { NotificationsComponent } from '../../components/notifications/notifications.component';
 import { ExcelService } from './../../services/excel.service';
 import { ProjectInfoPage } from '../modal/project-info/project-info.page';
+import { ProjectService } from 'src/app/services/project.service';
 
 @Component({
   selector: 'projects',
@@ -26,7 +27,7 @@ export class ProjectsPage {
   searchKey = '';
   yourLocation = '123 Test Street';
   themeCover = 'assets/img/ionic4-Start-Theme-cover.jpg';
-  public _projects: any;
+  public _projects: Project[];
   public selectedImage: string;
   public images: string[];
   constructor(
@@ -36,7 +37,8 @@ export class ProjectsPage {
     public alertCtrl: AlertController,
     public modalCtrl: ModalController,
     public toastCtrl: ToastController,
-    public excelService: ExcelService
+    public excelService: ExcelService,
+    private projectService: ProjectService
   ) {
     this.excelService.checkready();
     this.images = [
@@ -59,12 +61,12 @@ export class ProjectsPage {
           siteid: 'site1',
           sitename: 'sitename1',
           contractor: 'cname1',
-          startdate: '24/05/2020',
+          startdate: new Date('24/05/2020'),
           installation: 'inst',
           onsitetech: 'onsite',
-          additionalnote: 'addnote',
-          sourcelogo: 'srclogo',
-          targetlogo: 'trgtlogo'
+          additionalnotes: 'addnote',
+          sourcelogopath: 'srclogo',
+          targetlogopath: 'trgtlogo'
         },
         {
           id: 2,
@@ -73,12 +75,12 @@ export class ProjectsPage {
           siteid: 'site12',
           sitename: 'sitename12',
           contractor: 'cname12',
-          startdate: '25/05/2020',
+          startdate: new Date('25/05/2020'),
           installation: 'inst2',
           onsitetech: 'onsite2',
-          additionalnote: 'addnote2',
-          sourcelogo: 'srclogo2',
-          targetlogo: 'trgtlogo2'
+          additionalnotes: 'addnote2',
+          sourcelogopath: 'srclogo2',
+          targetlogopath: 'trgtlogo2'
         },
         {
           id: 3,
@@ -87,12 +89,12 @@ export class ProjectsPage {
           siteid: 'site13',
           sitename: 'sitename13',
           contractor: 'cname13',
-          startdate: '26/05/2020',
+          startdate: new Date('26/05/2020'),
           installation: 'inst3',
           onsitetech: 'onsite3',
-          additionalnote: 'addnote3',
-          sourcelogo: 'srclogo3',
-          targetlogo: 'trgtlogo3'
+          additionalnotes: 'addnote3',
+          sourcelogopath: 'srclogo3',
+          targetlogopath: 'trgtlogo3'
         },
         {
           id: 4,
@@ -101,12 +103,12 @@ export class ProjectsPage {
           siteid: 'site14',
           sitename: 'sitename14',
           contractor: 'cname14',
-          startdate: '27/05/2020',
+          startdate: new Date('27/05/2020'),
           installation: 'inst4',
           onsitetech: 'onsite4',
-          additionalnote: 'addnote4',
-          sourcelogo: 'srclogo4',
-          targetlogo: 'trgtlogo4'
+          additionalnotes: 'addnote4',
+          sourcelogopath: 'srclogo4',
+          targetlogopath: 'trgtlogo4'
         },
         {
           id: 5,
@@ -115,14 +117,20 @@ export class ProjectsPage {
           siteid: 'site15',
           sitename: 'sitename15',
           contractor: 'cname15',
-          startdate: '28/05/2020',
+          startdate: new Date('28/05/2020'),
           installation: 'inst5',
           onsitetech: 'onsite5',
-          additionalnote: 'addnote5',
-          sourcelogo: 'srclogo5',
-          targetlogo: 'trgtlogo5'
+          additionalnotes: 'addnote5',
+          sourcelogopath: 'srclogo5',
+          targetlogopath: 'trgtlogo5'
         }
       ];
+      // try {
+      //   this._projects = this._projects.concat(this.projectService.getProjects());
+      // } catch (error) {
+      //   alert(error);
+      // }
+      alert('total=' + this._projects.length);
   }
 
   ionViewWillEnter() {

@@ -9,9 +9,11 @@ import { Project } from 'src/app/interfaces/project';
 })
 export class CreateProjectPage implements OnInit {
   public onProjectCreateForm: FormGroup;
-  public project: any = {};
+  public project: Project;
 
-  constructor(private formBuilder: FormBuilder, private projectService: ProjectService) { }
+  constructor(private formBuilder: FormBuilder, private projectService: ProjectService) {
+    alert('create-entry');
+  }
 
   ngOnInit() {
     this.onProjectCreateForm = this.formBuilder.group({
@@ -51,19 +53,22 @@ export class CreateProjectPage implements OnInit {
     });
   }
   onCreate() {
-    this.project.id = null;
-    this.project.projectname = this.onProjectCreateForm.controls.name.value;
-    this.project.market = this.onProjectCreateForm.controls.market.value;
-    this.project.siteid = this.onProjectCreateForm.controls.siteid.value;
-    this.project.sitename = this.onProjectCreateForm.controls.sitename.value;
-    this.project.contractor = this.onProjectCreateForm.controls.contractor.value;
-    this.project.startdate = this.onProjectCreateForm.controls.startdate.value;
-    this.project.installation = this.onProjectCreateForm.controls.installation.value;
-    this.project.onsitetech = this.onProjectCreateForm.controls.onsitetech.value;
-    this.project.additionalnotes = this.onProjectCreateForm.controls.additionalnotes.value;
-    this.project.sourcelogopath = this.onProjectCreateForm.controls.sourcelogopath.value;
-    this.project.targetlogopath = this.onProjectCreateForm.controls.targetlogopath.value;
-    this.projectService.addProject(this.project as Project);
+    const d = new Date();
+    this.project = {
+      id: d.valueOf(),
+      projectname: this.onProjectCreateForm.controls.name.value,
+      market: this.onProjectCreateForm.controls.market.value,
+      siteid: this.onProjectCreateForm.controls.siteid.value,
+      sitename: this.onProjectCreateForm.controls.sitename.value,
+      contractor: this.onProjectCreateForm.controls.contractor.value,
+      startdate: this.onProjectCreateForm.controls.startdate.value,
+      installation: this.onProjectCreateForm.controls.installation.value,
+      onsitetech: this.onProjectCreateForm.controls.onsitetech.value,
+      additionalnotes: this.onProjectCreateForm.controls.additionalnotes.value,
+      sourcelogopath: this.onProjectCreateForm.controls.sourcelogopath.value,
+      targetlogopath: this.onProjectCreateForm.controls.targetlogopath.value
+    };
+    this.projectService.addProject(this.project);
     console.log(this.onProjectCreateForm);
   }
 }

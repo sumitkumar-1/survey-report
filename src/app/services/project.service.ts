@@ -1,23 +1,55 @@
-import { SQLiteObject } from '@ionic-native/sqlite/ngx';
+import { SQLiteObject, SQLite } from '@ionic-native/sqlite/ngx';
 import { ProjectAssets } from './../interfaces/projectassets';
 import { ProjectDetails } from './../interfaces/projectdetails';
 import { Injectable } from '@angular/core';
 import { Project } from './../interfaces/project';
 import { DbService } from './db.service';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { Platform } from '@ionic/angular';
+import { HttpClient } from '@angular/common/http';
+import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class ProjectService {
 
   private storage: SQLiteObject;
   private projectList = new BehaviorSubject([]);
   private ProjectDetailList = new BehaviorSubject([]);
   private ProjectAssetList = new BehaviorSubject([]);
+  private isDbReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
-  constructor(private dbservice: DbService) {
-    this.storage = dbservice.getStorage();
+  constructor(private platform: Platform,
+    private sqlite: SQLite,
+    private httpClient: HttpClient,
+    private sqlPorter: SQLitePorter) {
+    this.platform.ready().then(() => {
+      this.sqlite.create({
+        name: 'surveyreport.db',
+        location: 'default'
+      }).then((db: SQLiteObject) => {
+        this.storage = db;
+        alert('storage success' + this.storage);
+        this.bootstrapdb();
+      }).catch(error => alert('projectservice constructor1' + error));
+    }).catch(error => alert('projectservice constructor2' + error));
+    // this.storage = dbservice.getStorage();
+  }
+
+  bootstrapdb() {
+    this.httpClient.get(
+      'assets/db/dump.sql',
+      { responseType: 'text' }
+    ).subscribe(data => {
+      this.sqlPorter.importSqlToDb(this.storage, data)
+        .then(_ => {
+          this.isDbReady.next(true);
+        })
+        .catch(error => alert('project service bootstrapdb' + error));
+    });
+  }
+
+  dbState() {
+    return this.isDbReady.asObservable();
   }
 
   /* return all projects */
@@ -41,7 +73,6 @@ export class ProjectService {
   /* create project */
   public addProject(projectdata: Project) {
     const data = [
-      projectdata.id,
       projectdata.projectname,
       projectdata.market,
       projectdata.siteid,
@@ -54,12 +85,13 @@ export class ProjectService {
       projectdata.sourcelogopath,
       projectdata.targetlogopath
     ];
-
+    // this.storage.executeSql('SELECT * FROM pm_projects');
     // tslint:disable-next-line: max-line-length
-    return this.storage.executeSql('INSERT INTO pm_projects (id, projectname, market, siteid, sitename, contractor, startdate, installation, onsitetech, additionalnotes, sourcelogopath, targetlogopath) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', data)
+    return this.storage.executeSql('INSERT INTO pm_projects (projectname, market, siteid, sitename, contractor, startdate, installation, onsitetech, additionalnotes, sourcelogopath, targetlogopath) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', data)
       .then(res => {
+        alert('added successfully');
         this.getProjects();
-      });
+      }).catch((reason: any) => alert('addProject executeSql' + reason));
   }
 
   /* add project details */
@@ -115,8 +147,8 @@ export class ProjectService {
 
   /* get all projects */
   public getProjects() {
-    return this.storage.executeSql('SELECT * FROM pm_projects', []).then(res => {
-      const items: Project[] = [];
+    const items: Project[] = [];
+    this.storage.executeSql('SELECT * FROM pm_projects', []).then(res => {
       if (res.rows.length > 0) {
         for (let i = 0; i < res.rows.length; i++) {
           items.push({
@@ -137,6 +169,7 @@ export class ProjectService {
       }
       this.projectList.next(items);
     });
+    return items;
   }
 
   /* get single project */

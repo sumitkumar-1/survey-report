@@ -24,7 +24,7 @@ export class DbService {
       }).then((db: SQLiteObject) => {
         this.storage = db;
         this.bootstrapdb();
-      });
+      }).catch(error => alert('db service constructor error' + error));
     });
   }
 

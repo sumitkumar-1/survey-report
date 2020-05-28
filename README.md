@@ -35,3 +35,11 @@ npm install @ionic-native/sqlite-porter
 
 ionic cordova plugin add uk.co.workingedge.cordova.plugin.sqliteporter
 
+ionic build
+
+ionic cap copy
+
+ionic cap sync
+
+ionic cap open android //one time run
+ionic cap run android -l --external //live
