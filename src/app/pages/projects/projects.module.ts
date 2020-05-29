@@ -7,8 +7,6 @@ import { IonicModule } from '@ionic/angular';
 import { PopmenuComponent } from '../../components/popmenu/popmenu.component';
 
 import { ProjectsPage } from './projects.page';
-import { DbService } from 'src/app/services/db.service';
-import { ProjectService } from 'src/app/services/project.service';
 
 const routes: Routes = [
   {
@@ -24,10 +22,6 @@ const routes: Routes = [
     ReactiveFormsModule,
     IonicModule,
     RouterModule.forChild(routes)
-  ],
-  providers: [
-    DbService,
-    ProjectService,
   ],
   declarations: [ProjectsPage, PopmenuComponent],
 })
