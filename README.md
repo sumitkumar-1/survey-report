@@ -35,6 +35,8 @@ npm install @ionic-native/sqlite-porter
 
 ionic cordova plugin add uk.co.workingedge.cordova.plugin.sqliteporter
 
+
+# Debug Support
 ionic build
 
 ionic cap copy
@@ -43,3 +45,8 @@ ionic cap sync
 
 ionic cap open android //one time run
 ionic cap run android -l --external //live
+
+# ADB Register Device
+goto c:/adb/platform_tool
+run cmd
+    adb devices // (Allow in phone)

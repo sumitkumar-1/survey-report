@@ -27,6 +27,7 @@ import { File } from '@ionic-native/file/ngx';
 import { DbService } from './services/db.service';
 import { SQLite } from '@ionic-native/sqlite/ngx';
 import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
+import { PersistentService } from './services/persistent.service';
 
 
 @NgModule({
@@ -52,6 +53,7 @@ import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
     Platform,
     MediaService,
     ProjectService,
+    PersistentService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

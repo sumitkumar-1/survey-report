@@ -16,6 +16,8 @@ import { ImagePage } from '../modal/image/image.page';
 import { NotificationsComponent } from '../../components/notifications/notifications.component';
 import { ProjectInfoPage } from '../modal/project-info/project-info.page';
 import { ProjectService } from 'src/app/services/project.service';
+import { PersistentService } from 'src/app/services/persistent.service';
+import { SQLiteObject } from '@ionic-native/sqlite/ngx';
 
 @Component({
   selector: 'projects',
@@ -36,7 +38,8 @@ export class ProjectsPage {
     public alertCtrl: AlertController,
     public modalCtrl: ModalController,
     public toastCtrl: ToastController,
-    private projectService: ProjectService
+    private projectService: ProjectService,
+    private persistentService: PersistentService
   ) {
     this.images = [
       'assets/img/projects/thumb/image1.jpg',
@@ -58,7 +61,7 @@ export class ProjectsPage {
           siteid: 'site1',
           sitename: 'sitename1',
           contractor: 'cname1',
-          startdate: new Date('24/05/2020'),
+          startdate: new Date('05/24/2020').toLocaleDateString(),
           installation: 'inst',
           onsitetech: 'onsite',
           additionalnotes: 'addnote',
@@ -72,7 +75,7 @@ export class ProjectsPage {
           siteid: 'site12',
           sitename: 'sitename12',
           contractor: 'cname12',
-          startdate: new Date('25/05/2020'),
+          startdate: new Date('05/25/2020').toLocaleDateString(),
           installation: 'inst2',
           onsitetech: 'onsite2',
           additionalnotes: 'addnote2',
@@ -86,7 +89,7 @@ export class ProjectsPage {
           siteid: 'site13',
           sitename: 'sitename13',
           contractor: 'cname13',
-          startdate: new Date('26/05/2020'),
+          startdate: new Date('05/26/2020').toLocaleDateString(),
           installation: 'inst3',
           onsitetech: 'onsite3',
           additionalnotes: 'addnote3',
@@ -100,7 +103,7 @@ export class ProjectsPage {
           siteid: 'site14',
           sitename: 'sitename14',
           contractor: 'cname14',
-          startdate: new Date('27/05/2020'),
+          startdate: new Date('05/27/2020').toLocaleDateString(),
           installation: 'inst4',
           onsitetech: 'onsite4',
           additionalnotes: 'addnote4',
@@ -114,7 +117,7 @@ export class ProjectsPage {
           siteid: 'site15',
           sitename: 'sitename15',
           contractor: 'cname15',
-          startdate: new Date('28/05/2020'),
+          startdate: new Date('05/28/2020').toLocaleDateString(),
           installation: 'inst5',
           onsitetech: 'onsite5',
           additionalnotes: 'addnote5',
@@ -122,12 +125,35 @@ export class ProjectsPage {
           targetlogopath: 'trgtlogo5'
         }
       ];
-        // const data = this.projectService.getProjects();
-        // console.log(data);
-        // alert('data = ' + data);
-        // this._projects = this._projects.concat();
-
-        // alert('total=' + this._projects.length);
+    this.persistentService.dbDataSource.subscribe((db: SQLiteObject) => {
+      if (db !== null) {
+        this.projectService.getProjects(db).then(res => {
+          const items: Project[] = [];
+          if (res.rows.length > 0) {
+            for (let i = 0; i < res.rows.length; i++) {
+              items.push({
+                id: res.rows.item(i).id,
+                projectname: res.rows.item(i).projectname,
+                market: res.rows.item(i).market,
+                siteid: res.rows.item(i).siteid,
+                sitename: res.rows.item(i).sitename,
+                contractor: res.rows.item(i).contractor,
+                startdate: new Date(res.rows.item(i).startdate).toLocaleDateString(),
+                installation: res.rows.item(i).installation,
+                onsitetech: res.rows.item(i).onsitetech,
+                additionalnotes: res.rows.item(i).additionalnotes,
+                sourcelogopath: res.rows.item(i).sourcelogopath,
+                targetlogopath: res.rows.item(i).targetlogopath
+              });
+            }
+            this._projects = this._projects.concat(items);
+          }
+        }).catch((err) => {
+          console.log('DbError: ' + err);
+          alert('getProjects : ' + err);
+        });
+      }
+    });
   }
 
   ionViewWillEnter() {

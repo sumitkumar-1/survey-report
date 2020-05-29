@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ProjectService } from 'src/app/services/project.service';
 import { Project } from 'src/app/interfaces/project';
+import { PersistentService } from 'src/app/services/persistent.service';
+import { SQLiteObject } from '@ionic-native/sqlite/ngx';
+import { NavController } from '@ionic/angular';
 @Component({
   selector: 'app-create-project',
   templateUrl: './create-project.page.html',
@@ -11,9 +14,10 @@ export class CreateProjectPage implements OnInit {
   public onProjectCreateForm: FormGroup;
   public project: Project;
 
-  constructor(private formBuilder: FormBuilder, private projectService: ProjectService) {
-    alert('create-entry');
-  }
+  constructor(private formBuilder: FormBuilder,
+    private projectService: ProjectService,
+    private persistentService: PersistentService,
+    public navCtrl: NavController) { }
 
   ngOnInit() {
     this.onProjectCreateForm = this.formBuilder.group({
@@ -69,7 +73,15 @@ export class CreateProjectPage implements OnInit {
       sourcelogopath: this.onProjectCreateForm.controls.sourcelogopath.value,
       targetlogopath: this.onProjectCreateForm.controls.targetlogopath.value
     };
-    this.projectService.addProject(this.project);
-    console.log(this.onProjectCreateForm);
+    this.persistentService.dbDataSource.subscribe((db: SQLiteObject) => {
+      if (db !== null) {
+        this.projectService.addProject(this.project, db).then(res => {
+          alert('Success: project - ' + res.insertId + ' added sucessfully !!');
+          this.navCtrl.navigateRoot('/projects');
+        }).catch((err) => {
+          console.log('DbError: ' + err);
+        });
+      }
+    });
   }
 }

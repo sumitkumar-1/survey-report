@@ -5,7 +5,7 @@ export interface Project {
     siteid: string;
     sitename: string;
     contractor: string;
-    startdate: Date;
+    startdate: string;
     installation: string;
     onsitetech: string;
     additionalnotes: string;
