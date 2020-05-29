@@ -52,6 +52,7 @@ export class CreateProjectPage implements OnInit {
       ])]
     });
   }
+
   onCreate() {
     const d = new Date();
     this.project = {

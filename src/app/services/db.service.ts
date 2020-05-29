@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
 
@@ -17,6 +17,10 @@ export class DbService {
     private httpClient: HttpClient,
     private sqlPorter: SQLitePorter,
   ) {
+    this.seedDb();
+  }
+
+  public seedDb() {
     this.platform.ready().then(() => {
       this.sqlite.create({
         name: 'surveyreport.db',
@@ -28,7 +32,7 @@ export class DbService {
     });
   }
 
-  bootstrapdb() {
+  private bootstrapdb() {
     this.httpClient.get(
       'assets/db/dump.sql',
       { responseType: 'text' }

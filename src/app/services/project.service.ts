@@ -1,74 +1,14 @@
-import { SQLiteObject, SQLite } from '@ionic-native/sqlite/ngx';
 import { ProjectAssets } from './../interfaces/projectassets';
 import { ProjectDetails } from './../interfaces/projectdetails';
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { Project } from './../interfaces/project';
 import { DbService } from './db.service';
-import { BehaviorSubject, Observable } from 'rxjs';
 import { Platform } from '@ionic/angular';
-import { HttpClient } from '@angular/common/http';
-import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
 
 @Injectable()
 export class ProjectService {
 
-  private storage: SQLiteObject;
-  private projectList = new BehaviorSubject([]);
-  private ProjectDetailList = new BehaviorSubject([]);
-  private ProjectAssetList = new BehaviorSubject([]);
-  private isDbReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
-
-  constructor(private platform: Platform,
-    private sqlite: SQLite,
-    private httpClient: HttpClient,
-    private sqlPorter: SQLitePorter) {
-    this.platform.ready().then(() => {
-      this.sqlite.create({
-        name: 'surveyreport.db',
-        location: 'default'
-      }).then((db: SQLiteObject) => {
-        this.storage = db;
-        alert('storage success' + this.storage);
-        this.bootstrapdb();
-      }).catch(error => alert('projectservice constructor1' + error));
-    }).catch(error => alert('projectservice constructor2' + error));
-    // this.storage = dbservice.getStorage();
-  }
-
-  bootstrapdb() {
-    this.httpClient.get(
-      'assets/db/dump.sql',
-      { responseType: 'text' }
-    ).subscribe(data => {
-      this.sqlPorter.importSqlToDb(this.storage, data)
-        .then(_ => {
-          this.isDbReady.next(true);
-        })
-        .catch(error => alert('project service bootstrapdb' + error));
-    });
-  }
-
-  dbState() {
-    return this.isDbReady.asObservable();
-  }
-
-  /* return all projects */
-  public fetchProjects(): Observable<Project[]> {
-    this.getProjects();
-    return this.projectList.asObservable();
-  }
-
-  /* return all projects */
-  public fetchProjectDetails(): Observable<ProjectDetails[]> {
-    this.getProjectDetails();
-    return this.ProjectDetailList.asObservable();
-  }
-
-  /* return all projects */
-  public fetchProjectAssets(): Observable<ProjectAssets[]> {
-    this.getProjectAssets();
-    return this.ProjectAssetList.asObservable();
-  }
+  constructor(private platform: Platform, private dbservice: DbService) {}
 
   /* create project */
   public addProject(projectdata: Project) {
@@ -85,70 +25,99 @@ export class ProjectService {
       projectdata.sourcelogopath,
       projectdata.targetlogopath
     ];
-    // this.storage.executeSql('SELECT * FROM pm_projects');
     // tslint:disable-next-line: max-line-length
-    return this.storage.executeSql('INSERT INTO pm_projects (projectname, market, siteid, sitename, contractor, startdate, installation, onsitetech, additionalnotes, sourcelogopath, targetlogopath) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', data)
-      .then(res => {
-        alert('added successfully');
-        this.getProjects();
-      }).catch((reason: any) => alert('addProject executeSql' + reason));
+    this.dbservice.getStorage().executeSql('INSERT INTO pm_projects (projectname, market, siteid, sitename, contractor, startdate, installation, onsitetech, additionalnotes, sourcelogopath, targetlogopath) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', data).then(res => {
+      return 'Success: project - ' + projectdata.id + ' added sucessfully !!';
+    }).catch((err) => {
+      console.log('DbError: ' + err);
+    });
   }
 
   /* add project details */
   public addProjectDetails(projectdetaildata: ProjectDetails) {
-
-    const data = [projectdetaildata.projectid, projectdetaildata.aspname, projectdetaildata.completeddate,
-    projectdetaildata.shift, projectdetaildata.currentstatus, projectdetaildata.e911completed,
-    projectdetaildata.srscompleted, projectdetaildata.usedlongcable, projectdetaildata.dulasset, projectdetaildata.dusserial,
-    projectdetaildata.dulasset, projectdetaildata.dulserial, projectdetaildata.xmuasset, projectdetaildata.xmuserial,
-    projectdetaildata.installedserial, projectdetaildata.installedasset];
-
+    const data = [
+      projectdetaildata.projectid,
+      projectdetaildata.aspname,
+      projectdetaildata.completeddate,
+      projectdetaildata.shift,
+      projectdetaildata.currentstatus,
+      projectdetaildata.e911completed,
+      projectdetaildata.srscompleted,
+      projectdetaildata.usedlongcable,
+      projectdetaildata.dulasset,
+      projectdetaildata.dusserial,
+      projectdetaildata.dulasset,
+      projectdetaildata.dulserial,
+      projectdetaildata.xmuasset,
+      projectdetaildata.xmuserial,
+      projectdetaildata.installedserial,
+      projectdetaildata.installedasset
+    ];
     // tslint:disable-next-line: max-line-length
-    return this.storage.executeSql('INSERT INTO pm_project_details (id, projectid, aspname, completeddate, shift, currentstatus, e911completed, srscompleted, usedlongcable, dusasset, dusserial, dulasset, dulserial, xmuasset, xmuserial, installedserial, installedasset) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', data)
-      .then(res => {
-        this.getProjectDetails();
-      });
+    this.dbservice.getStorage().executeSql('INSERT INTO pm_project_details (id, projectid, aspname, completeddate, shift, currentstatus, e911completed, srscompleted, usedlongcable, dusasset, dusserial, dulasset, dulserial, xmuasset, xmuserial, installedserial, installedasset) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', data).then(res => {
+      return 'Success: projectDetails - ' + projectdetaildata.projectid + ' added sucessfully !!';
+    }).catch((err) => {
+      console.log('DbError: ' + err);
+    });
   }
 
   /* add project assets */
   public addProjectAssets(projectassetdata: ProjectAssets) {
-    const data = [projectassetdata.projectid, projectassetdata.assettype, projectassetdata.assetpath];
-    return this.storage.executeSql('INSERT INTO pm_project_assets (projectid, assettype, assetpath) VALUES (?, ?, ?)', data)
+    const data = [
+      projectassetdata.projectid,
+      projectassetdata.assettype,
+      projectassetdata.assetpath
+    ];
+    this.dbservice.getStorage().executeSql('INSERT INTO pm_project_assets (projectid, assettype, assetpath) VALUES (?, ?, ?)', data)
       .then(res => {
-        this.getProjectAssets();
+        return 'Success: projectAsset - ' + projectassetdata.projectid + ' added sucessfully !!';
+      }).catch((err) => {
+        console.log('DbError: ' + err);
       });
   }
 
   /* update project */
   public updateProject(projectdata: Project) {
-    const data = [projectdata.projectname, projectdata.sitename];
-    return this.storage.executeSql(`UPDATE pm_projects SET projectname = ?, sitename = ? WHERE id = ${projectdata.id}`, data)
+    const data = [
+      projectdata.projectname,
+      projectdata.sitename
+    ];
+    this.dbservice.getStorage().executeSql(`UPDATE pm_projects SET projectname = ?, sitename = ? WHERE id = ${projectdata.id}`, data)
       .then(() => {
-        this.getProjects();
+        return 'Success: project - ' + projectdata.id + ' updated sucessfully !!';
+      }).catch((err) => {
+        console.log('DbError: ' + err);
       });
   }
 
   /* update project details */
   public updateProjectDetails(projectdata: ProjectDetails) {
-    const data = [projectdata.aspname, projectdata.currentstatus];
-    return this.storage.executeSql(`UPDATE pm_projects SET aspname = ?, currentstatus = ? WHERE id = ${projectdata.id}`, data)
+    const data = [
+      projectdata.aspname,
+      projectdata.currentstatus
+    ];
+    this.dbservice.getStorage().executeSql(`UPDATE pm_projects SET aspname = ?, currentstatus = ? WHERE id = ${projectdata.id}`, data)
       .then(() => {
-        this.getProjects();
+        return 'Success: project - ' + projectdata.projectid + ' updated sucessfully !!';
+      }).catch((err) => {
+        console.log('DbError: ' + err);
       });
   }
 
   /* delte project */
   public deleteProject(projectid: number) {
-    return this.storage.executeSql('DELETE FROM pm_projects WHERE id = ?', [projectid])
-      .then(_ => {
-        this.getProjects();
-      });
+    this.dbservice.getStorage().executeSql('DELETE FROM pm_projects WHERE id = ?', [projectid]).then(_ => {
+      return 'Success: Project - ' + projectid + ' removed !!';
+    }).catch((err) => {
+      console.log('DbError: ' + err);
+    });
   }
 
   /* get all projects */
   public getProjects() {
-    const items: Project[] = [];
-    this.storage.executeSql('SELECT * FROM pm_projects', []).then(res => {
+    console.log('handler ' + this.dbservice.getStorage());
+    this.dbservice.getStorage().executeSql('SELECT * FROM pm_projects', []).then(res => {
+      const items: Project[] = [];
       if (res.rows.length > 0) {
         for (let i = 0; i < res.rows.length; i++) {
           items.push({
@@ -166,15 +135,17 @@ export class ProjectService {
             targetlogopath: res.rows.item(i).targetlogopath
           });
         }
+        return items;
       }
-      this.projectList.next(items);
+    }).catch((err) => {
+      console.log('DbError: ' + err);
+      alert('getProjects : ' + err);
     });
-    return items;
   }
 
   /* get single project */
-  public getProject(projectid: number): Promise<Project> {
-    return this.storage.executeSql('SELECT * FROM pm_projects WHERE id = ?', [projectid]).then(res => {
+  public getProject(projectid: number) {
+    this.dbservice.getStorage().executeSql('SELECT * FROM pm_projects WHERE id = ?', [projectid]).then(res => {
       return {
         id: res.rows.item(0).id,
         projectname: res.rows.item(0).projectname,
@@ -189,12 +160,14 @@ export class ProjectService {
         sourcelogopath: res.rows.item(0).sourcelogopath,
         targetlogopath: res.rows.item(0).targetlogopath
       };
+    }).catch((err) => {
+      console.log('DbError: ' + err);
     });
   }
 
   /* get all project details */
   public getProjectDetails() {
-    return this.storage.executeSql('SELECT * FROM pm_project_details', []).then(res => {
+    this.dbservice.getStorage().executeSql('SELECT * FROM pm_project_details', []).then(res => {
       const items: ProjectDetails[] = [];
       if (res.rows.length > 0) {
         for (let i = 0; i < res.rows.length; i++) {
@@ -219,13 +192,15 @@ export class ProjectService {
           });
         }
       }
-      this.ProjectDetailList.next(items);
+      return items;
+    }).catch((err) => {
+      console.log('DbError: ' + err);
     });
   }
 
   /* get all project details */
   public getProjectAssets() {
-    return this.storage.executeSql('SELECT * FROM pm_project_assets', []).then(res => {
+    this.dbservice.getStorage().executeSql('SELECT * FROM pm_project_assets', []).then(res => {
       const items: ProjectAssets[] = [];
       if (res.rows.length > 0) {
         for (let i = 0; i < res.rows.length; i++) {
@@ -237,7 +212,9 @@ export class ProjectService {
           });
         }
       }
-      this.ProjectAssetList.next(items);
+      return items;
+    }).catch((err) => {
+      console.log('DbError: ' + err);
     });
   }
 }

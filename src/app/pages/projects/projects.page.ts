@@ -14,7 +14,6 @@ import { SearchFilterPage } from '../modal/search-filter/search-filter.page';
 import { ImagePage } from '../modal/image/image.page';
 // Call notifications test by Popover and Custom Component.
 import { NotificationsComponent } from '../../components/notifications/notifications.component';
-import { ExcelService } from './../../services/excel.service';
 import { ProjectInfoPage } from '../modal/project-info/project-info.page';
 import { ProjectService } from 'src/app/services/project.service';
 
@@ -37,10 +36,8 @@ export class ProjectsPage {
     public alertCtrl: AlertController,
     public modalCtrl: ModalController,
     public toastCtrl: ToastController,
-    public excelService: ExcelService,
     private projectService: ProjectService
   ) {
-    this.excelService.checkready();
     this.images = [
       'assets/img/projects/thumb/image1.jpg',
       'assets/img/projects/thumb/image2.jpg',
@@ -125,12 +122,12 @@ export class ProjectsPage {
           targetlogopath: 'trgtlogo5'
         }
       ];
-      // try {
-      //   this._projects = this._projects.concat(this.projectService.getProjects());
-      // } catch (error) {
-      //   alert(error);
-      // }
-      alert('total=' + this._projects.length);
+        // const data = this.projectService.getProjects();
+        // console.log(data);
+        // alert('data = ' + data);
+        // this._projects = this._projects.concat();
+
+        // alert('total=' + this._projects.length);
   }
 
   ionViewWillEnter() {
