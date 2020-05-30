@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { File } from '@ionic-native/file/ngx';
 import { Platform } from '@ionic/angular';
-// import * as ExcelJS from 'exceljs';
+// import * as Excel from 'exceljs/dist/exceljs.min.js';
 
 @Injectable()
 export class ExcelService {
@@ -90,8 +90,10 @@ export class ExcelService {
   }
 
   readData() {
-    // const wb = new ExcelJS.Workbook();
-    // wb.xlsx.readFile(this.exportFileName).then(() => {
+    // console.log('excel', Excel);
+    // const wb = new Excel.Workbook();
+    // console.log(wb);
+    // wb.xlsx.readFile('').then(() => {
     //   const ws = wb.getWorksheet(0);
     //   console.log(ws);
     // }).catch((err) => {

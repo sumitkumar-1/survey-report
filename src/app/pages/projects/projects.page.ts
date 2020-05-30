@@ -240,14 +240,14 @@ export class ProjectsPage {
 
   // view trip detail
   viewProject(project: Project) {
-    // this.nav.push(ProjectDetailPage, {id: id});
-    // this.navCtrl.navigateRoot('/project-detail', {data: project});
+    // this.nav.push(ProjectHomePage, {id: id});
+    // this.navCtrl.navigateRoot('/project-home', {data: project});
     const navigationExtras: NavigationExtras = {
       state: {
         projectData: project
       }
     };
-    this.router.navigate(['project-detail'], navigationExtras);
+    this.router.navigate(['project-home'], navigationExtras);
   }
   createProject() {
     this.navCtrl.navigateRoot('/create-project');
