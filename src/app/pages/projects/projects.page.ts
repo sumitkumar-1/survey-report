@@ -19,6 +19,7 @@ import { ProjectInfoPage } from '../modal/project-info/project-info.page';
 import { ProjectService } from 'src/app/services/project.service';
 import { PersistentService } from 'src/app/services/persistent.service';
 import { SQLiteObject } from '@ionic-native/sqlite/ngx';
+import { Router, NavigationExtras } from '@angular/router';
 
 @Component({
   selector: 'projects',
@@ -41,7 +42,8 @@ export class ProjectsPage {
     public toastCtrl: ToastController,
     private projectService: ProjectService,
     private persistentService: PersistentService,
-    private excelService: ExcelService
+    private excelService: ExcelService,
+    private router: Router
   ) {
     this.images = [
       'assets/img/projects/thumb/image1.jpg',
@@ -237,10 +239,17 @@ export class ProjectsPage {
   }
 
   // view trip detail
-  async viewDetail(id) {
+  viewProject(project: Project) {
     // this.nav.push(ProjectDetailPage, {id: id});
+    // this.navCtrl.navigateRoot('/project-detail', {data: project});
+    const navigationExtras: NavigationExtras = {
+      state: {
+        projectData: project
+      }
+    };
+    this.router.navigate(['project-detail'], navigationExtras);
   }
-  goToCreateProject() {
+  createProject() {
     this.navCtrl.navigateRoot('/create-project');
   }
 

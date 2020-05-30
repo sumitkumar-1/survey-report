@@ -67,7 +67,7 @@
 <!-- trip -->
 <ion-content padding class="projs detail-bg">
   <!--list of trips-->
-  <div class="proj card" *ngFor="let project of _projects; let i = index" tappable (click)="viewDetail(project.id)"
+  <div class="proj card" *ngFor="let project of _projects; let i = index" tappable (click)="viewProject(project)"
     margin-bottom>
     <div class="background border-bottom" [ngStyle]="{'background-image': 'url(' + images[i] + ')'}">
       <div class="background-filter rlt">
@@ -95,7 +95,7 @@
     </button>
   </ion-fab> -->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed" style="margin-right: 2%;">
-    <ion-fab-button (click)="goToCreateProject()">
+    <ion-fab-button (click)="createProject()">
       <ion-icon name="add-circle" style="font-size: 2rem;"></ion-icon>
     </ion-fab-button>
   </ion-fab>

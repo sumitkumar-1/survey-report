@@ -1,0 +1,81 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="projects"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Create Project</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <div>
+          {{project.id}}
+        </div>
+      </ion-col>
+      <ion-col>
+        <div>
+          {{project.projectname}}
+        </div>
+      </ion-col>
+      <ion-col>
+        <div>
+          {{project.market}}
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <div>
+          {{project.siteid}}
+        </div>
+      </ion-col>
+      <ion-col>
+        <div>
+          {{project.sitename}}
+        </div>
+      </ion-col>
+      <ion-col>
+        <div>
+          {{project.contractor}}
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <div>
+          {{project.startdate}}
+        </div>
+      </ion-col>
+      <ion-col>
+        <div>
+          {{project.installation}}
+        </div>
+      </ion-col>
+      <ion-col>
+        <div>
+          {{project.onsitetech}}
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <div>
+          {{project.additionalnotes}}
+        </div>
+      </ion-col>
+      <ion-col>
+        <div>
+          {{project.sourcelogopath}}
+        </div>
+      </ion-col>
+      <ion-col>
+        <div>
+          {{project.targetlogopath}}
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
