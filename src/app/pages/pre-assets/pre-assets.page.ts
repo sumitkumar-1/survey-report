@@ -10,7 +10,6 @@ export class PreAssetsPage implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    // this.photoService.loadSaved();
   }
 
 }

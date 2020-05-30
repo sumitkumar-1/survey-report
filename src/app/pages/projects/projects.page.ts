@@ -247,7 +247,7 @@ export class ProjectsPage {
         projectData: project
       }
     };
-    this.router.navigate(['project-home'], navigationExtras);
+    this.router.navigate(['phome'], navigationExtras);
   }
   createProject() {
     this.navCtrl.navigateRoot('/create-project');

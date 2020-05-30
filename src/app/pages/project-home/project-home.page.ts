@@ -15,10 +15,8 @@ export class ProjectHomePage implements OnInit {
     //     this.project = this.router.getCurrentNavigation().extras.state.projectData;
     //   }
     // });
-    console.log(this.route);
   }
 
   ngOnInit() {
   }
-
 }
