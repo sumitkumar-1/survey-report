@@ -1,3 +1,4 @@
+import { ExcelService } from 'src/app/services/excel.service';
 import { Project } from './../../interfaces/project';
 import { Component } from '@angular/core';
 import {
@@ -39,7 +40,8 @@ export class ProjectsPage {
     public modalCtrl: ModalController,
     public toastCtrl: ToastController,
     private projectService: ProjectService,
-    private persistentService: PersistentService
+    private persistentService: PersistentService,
+    private excelService: ExcelService
   ) {
     this.images = [
       'assets/img/projects/thumb/image1.jpg',

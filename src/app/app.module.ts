@@ -29,7 +29,6 @@ import { SQLite } from '@ionic-native/sqlite/ngx';
 import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
 import { PersistentService } from './services/persistent.service';
 
-
 @NgModule({
   declarations: [AppComponent, NotificationsComponent],
   imports: [
@@ -54,6 +53,7 @@ import { PersistentService } from './services/persistent.service';
     MediaService,
     ProjectService,
     PersistentService,
+    ExcelService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
