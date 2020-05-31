@@ -8,7 +8,6 @@ import { IonicModule } from '@ionic/angular';
 
 import { ProjectOverviewPage } from './project-overview.page';
 import { File } from '@ionic-native/file/ngx';
-import { ExcelService } from 'src/app/services/excel.service';
 
 const routes: Routes = [
   {
@@ -25,8 +24,7 @@ const routes: Routes = [
     RouterModule.forChild(routes)
   ],
   providers: [
-    File,
-    ExcelService
+    File
   ],
   declarations: [ProjectOverviewPage, PopoverComponent],
   entryComponents: [PopoverComponent]
