@@ -15,7 +15,7 @@ export class ExcelService {
   blobType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
 
   constructor(private platform: Platform, private file: File) {
-    this.init();
+     // this.init();
   }
 
   public init() {

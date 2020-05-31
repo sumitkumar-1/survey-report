@@ -10,7 +10,7 @@ import { ExcelService } from 'src/app/services/excel.service';
 })
 export class ProjectOverviewPage implements OnInit {
   constructor(public popoverCtrl: PopoverController, public navCtrl: NavController,
-    /*private excelService: ExcelService*/) { }
+    private excelService: ExcelService) { }
   ngOnInit() {
   }
 
@@ -39,8 +39,7 @@ export class ProjectOverviewPage implements OnInit {
   }
   Save() {
     console.log('parent: Save');
-    // this.excelService.init();
-    this.navCtrl.navigateRoot('/create-excel');
+    this.excelService.init();
   }
   Export() {
     console.log('parent: Export');
