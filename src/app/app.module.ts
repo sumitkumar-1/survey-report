@@ -26,7 +26,7 @@ import { DbService } from './services/db.service';
 import { SQLite } from '@ionic-native/sqlite/ngx';
 import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
 import { PersistentService } from './services/persistent.service';
-// import { PopoverComponent } from './components/popover/popover.component';
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 
 @NgModule({
   declarations: [AppComponent, NotificationsComponent],
@@ -51,6 +51,7 @@ import { PersistentService } from './services/persistent.service';
     MediaService,
     ProjectService,
     PersistentService,
+    AndroidPermissions,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

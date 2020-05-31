@@ -5,6 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { Pages } from './interfaces/pages';
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 
 @Component({
   selector: 'app-root',
@@ -19,8 +20,20 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    public navCtrl: NavController
+    public navCtrl: NavController,
+    public androidPermissions: AndroidPermissions
   ) {
+    // check permissions before proceding
+    this.platform.ready().then(() => {
+      this.androidPermissions.requestPermissions(
+        [
+          this.androidPermissions.PERMISSION.CAMERA,
+          this.androidPermissions.PERMISSION.READ_EXTERNAL_STORAGE,
+          this.androidPermissions.PERMISSION.WRITE_EXTERNAL_STORAGE
+        ]
+      );
+    });
+
     this.appPages = [
       {
         title: 'Home',
@@ -42,7 +55,6 @@ export class AppComponent {
         icon: 'cog'
       }
     ];
-
     this.initializeApp();
   }
 
@@ -50,7 +62,7 @@ export class AppComponent {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-    }).catch(() => {});
+    }).catch(() => { });
   }
 
   goToEditProgile() {

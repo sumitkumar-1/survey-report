@@ -35,6 +35,10 @@ npm install @ionic-native/sqlite-porter
 
 ionic cordova plugin add uk.co.workingedge.cordova.plugin.sqliteporter
 
+# Android Permission Support
+npm install cordova-plugin-android-permissions
+npm install @ionic-native/android-permissions
+ionic cap sync
 
 # Debug Support
 ionic build
@@ -50,3 +54,19 @@ ionic cap run android -l --external //live
 goto c:/adb/platform_tool
 run cmd
     adb devices // (Allow in phone)
+
+# ADB to run emulator as root
+$ > adb shell
+generic_x86:/ $
+generic_x86:/ $ exit
+$ > adb root
+restarting adb as root
+$ > adb shell
+generic_x86:/ #
+
+# ADB to run sqlite database
+adb devices
+adb -s emulator-xxxx shell
+run-as <your-package-name> 
+cd data/data/<your-package-name>/databases/
+sqlite3 <your-db-name>.db
