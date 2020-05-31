@@ -4,9 +4,15 @@
       <ion-back-button defaultHref="projects"></ion-back-button>
     </ion-buttons>
     <ion-title>Project Overview</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="presentPopover($event)">
+        <ion-icon name="more" style="zoom:1.6;"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
+<app-popover class="my-custom-class" *ngIf="isPopOverClicked"></app-popover>
 <ion-content [fullscreen]="true" padding>
   <ion-header collapse="condense">
     <ion-toolbar>

@@ -11,7 +11,9 @@ const routes: Routes = [
   { path: 'project-info', loadChildren: './pages/modal/project-info/project-info.module#ProjectInfoPageModule' },
   { path: 'create-project', loadChildren: './pages/create-project/create-project.module#CreateProjectPageModule' },
   // { path: 'project-home', loadChildren: './pages/project-home/project-home.module#ProjectHomePageModule' }
-  { path: 'phome', loadChildren: () => import('./pages/project-home/project-home.module').then(m => m.ProjectHomePageModule)}
+  { path: 'phome', loadChildren: () => import('./pages/project-home/project-home.module').then(m => m.ProjectHomePageModule)},
+  { path: 'create-excel', loadChildren: './pages/create-excel/create-excel.module#CreateExcelPageModule' }
+
 ];
 
 @NgModule({

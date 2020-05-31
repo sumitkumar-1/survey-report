@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { IonicModule, IonicRouteStrategy, Platform } from '@ionic/angular';
@@ -22,12 +22,11 @@ import { ProjectInfoPageModule } from './pages/modal/project-info/project-info.m
 // Service
 import { MediaService } from './services/media.service';
 import { ProjectService } from './services/project.service';
-import { ExcelService } from './services/excel.service';
-import { File } from '@ionic-native/file/ngx';
 import { DbService } from './services/db.service';
 import { SQLite } from '@ionic-native/sqlite/ngx';
 import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
 import { PersistentService } from './services/persistent.service';
+// import { PopoverComponent } from './components/popover/popover.component';
 
 @NgModule({
   declarations: [AppComponent, NotificationsComponent],
@@ -47,13 +46,11 @@ import { PersistentService } from './services/persistent.service';
     SplashScreen,
     SQLite,
     SQLitePorter,
-    File,
     DbService,
     Platform,
     MediaService,
     ProjectService,
     PersistentService,
-    ExcelService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

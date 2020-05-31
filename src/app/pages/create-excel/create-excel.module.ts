@@ -1,4 +1,3 @@
-import { PopoverComponent } from 'src/app/components/popover/popover.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -6,13 +5,14 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ProjectOverviewPage } from './project-overview.page';
+import { CreateExcelPage } from './create-excel.page';
+import { File } from '@ionic-native/file/ngx';
 import { ExcelService } from 'src/app/services/excel.service';
 
 const routes: Routes = [
   {
     path: '',
-    component: ProjectOverviewPage
+    component: CreateExcelPage
   }
 ];
 
@@ -23,11 +23,10 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  // providers: [
-  //   File,
-  //   ExcelService
-  // ],
-  declarations: [ProjectOverviewPage, PopoverComponent],
-  entryComponents: [PopoverComponent]
+  providers: [
+    File,
+    ExcelService
+  ],
+  declarations: [CreateExcelPage]
 })
-export class ProjectOverviewPageModule {}
+export class CreateExcelPageModule {}
