@@ -27,6 +27,7 @@ import { SQLite } from '@ionic-native/sqlite/ngx';
 import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
 import { PersistentService } from './services/persistent.service';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+import { File } from '@ionic-native/file/ngx';
 
 @NgModule({
   declarations: [AppComponent, NotificationsComponent],
@@ -52,6 +53,7 @@ import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
     ProjectService,
     PersistentService,
     AndroidPermissions,
+    File,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
