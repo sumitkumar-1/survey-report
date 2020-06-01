@@ -3,6 +3,7 @@ import { PopoverController, NavController, Platform } from '@ionic/angular';
 import { PopoverComponent } from 'src/app/components/popover/popover.component';
 import { File } from '@ionic-native/file/ngx';
 import * as Excel from 'exceljs';
+import { Base64 } from '@ionic-native/base64/ngx';
 
 @Component({
   selector: 'app-project-overview',
@@ -15,10 +16,13 @@ export class ProjectOverviewPage implements OnInit {
   private blobType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
   private TEMPLATE_WORKSHEETS = ['Summary', 'PRE PICTURES', 'POST PICTURES', 'CT'];
   private exportFileDir: string;
+  private assets: any;
+  private k: number;
 
   constructor(public popoverCtrl: PopoverController,
     public navCtrl: NavController,
     private platform: Platform,
+    private base64: Base64,
     private file: File) { }
 
   ngOnInit() {
@@ -71,24 +75,24 @@ export class ProjectOverviewPage implements OnInit {
 
   private initExport() {
     if (this.platform.is('android')) {
-      this.file.checkDir(this.file.applicationStorageDirectory, this.saveDir).then(() => {
+      this.file.checkDir(this.file.externalApplicationStorageDirectory, this.saveDir).then(() => {
         console.log('Directory exists !!');
-        this.exportFileDir = this.file.applicationStorageDirectory + this.saveDir;
+        this.exportFileDir = this.file.externalApplicationStorageDirectory + this.saveDir;
         this.createExcel();
       }).catch((err) => {
-        console.log('Directory does not exists !!, creating it');
-        this.file.createDir(this.file.applicationStorageDirectory, this.saveDir, false).then(() => {
+        console.log('Directory does not exists !!, creating it ' + err.message);
+        this.file.createDir(this.file.externalApplicationStorageDirectory, this.saveDir, false).then(() => {
           console.log('Directory Created Sucessfully !!');
-          this.exportFileDir = this.file.applicationStorageDirectory + this.saveDir;
+          this.exportFileDir = this.file.externalApplicationStorageDirectory + this.saveDir;
           this.createExcel();
-        }).catch(() => {
-          console.log('Failed to Create Directory !!');
+        }).catch((err1) => {
+          console.log('Failed to Create Directory !!' + err1.message);
         });
       });
     }
   }
 
-  private createExcel() {
+  async createExcel() {
     const wb = new Excel.Workbook();
 
     // setting workbook property
@@ -183,34 +187,74 @@ export class ProjectOverviewPage implements OnInit {
     this.createCell(post_ws, 'A1', 'Post Pictures', headerFont, cellBorder, cellFillYellow);
     post_ws.getRow(1).alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
 
-    console.log(this.exportFileDir + '/1.png');
+    console.log(this.exportFileDir);
 
-    // file:///data/user/0/io.ionic.starter/sitesurvey/1.png
-    // /data/data/io.ionic.starter/sitesurvey/1.png
-
-    this.file.checkFile(this.exportFileDir, '1.png').then((data) => {
+    this.file.checkFile(this.exportFileDir + '/', '1.png').then(() => {
       console.log('File 1.png Exists');
     }).catch((err) => {
-      console.log('File 1.png does not Exists');
-    });
-    this.file.readAsDataURL(this.exportFileDir, '1.png').then((imgdata) => {
-      console.log('read data image' + imgdata);
-      const imageId1 = wb.addImage({
-        base64: imgdata,
-        extension: 'png',
-      });
-      pre_ws.addImage(imageId1, {
-        tl: { col: 0, row: 2 },
-        ext: { width: 250, height: 250 }
-      });
-    }).catch((err) => {
-      console.log('Unable to add Image' + err);
+      console.log('File 1.png does not Exists ' + err.message);
     });
 
+    this.assets = [
+      this.file.externalApplicationStorageDirectory + this.saveDir + '/1.png',
+      this.file.externalApplicationStorageDirectory + this.saveDir + '/2.png',
+      this.file.externalApplicationStorageDirectory + this.saveDir + '/3.png',
+      this.file.externalApplicationStorageDirectory + this.saveDir + '/4.png',
+      this.file.externalApplicationStorageDirectory + this.saveDir + '/5.png',
+      this.file.externalApplicationStorageDirectory + this.saveDir + '/6.png',
+      this.file.externalApplicationStorageDirectory + this.saveDir + '/7.png',
+      this.file.externalApplicationStorageDirectory + this.saveDir + '/8.png',
+      this.file.externalApplicationStorageDirectory + this.saveDir + '/9.png',
+      this.file.externalApplicationStorageDirectory + this.saveDir + '/10.png',
+      this.file.externalApplicationStorageDirectory + this.saveDir + '/11.png',
+      this.file.externalApplicationStorageDirectory + this.saveDir + '/12.png',
+    ];
+
+    const max_image_per_row = 5;
+    const rows = Math.ceil(this.assets.length / max_image_per_row) * 15;
+    const cols = max_image_per_row * 4;
+    this.k = 0;
+    for (let i = 2; i < rows; i += 14) {
+      console.log('Processing Row = ' + i);
+      await this.addColumnImage(cols, i, wb, pre_ws);
+    }
+
+    console.log('Saving to Excel');
+
     // save under export.xlsx
-    wb.xlsx.writeBuffer().then(data => {
+    await wb.xlsx.writeBuffer().then(data => {
       const blob = new Blob([data], { type: this.blobType });
       this.file.writeFile(this.exportFileDir, 'export1.xlsx', blob);
+    }).catch((err) => {
+      console.log('Unable to Create Excel File ' + err.message);
+    });
+    console.log('Done Create Excel');
+  }
+
+  private async addColumnImage(cols: number, i: number, workbook: Excel.Workbook, sheet: Excel.Worksheet) {
+    for (let j = 0; j < cols && this.k < this.assets.length; j += 4) {
+      console.log('Image No = ' + this.k);
+      await this.addImageToExcel(this.assets[this.k], 'png', workbook,
+        sheet, {
+        tl: { col: j, row: i },
+        ext: { width: 250, height: 250 },
+        editAs: 'undefined'
+      });
+      console.log('Image No = ' + this.k + ' added');
+      this.k = this.k + 1;
+    }
+  }
+
+  private async addImageToExcel(imagePath: string, ext: any, workbook: Excel.Workbook, sheet: Excel.Worksheet, location: any) {
+    await this.base64.encodeFile(imagePath).then((based64File: string) => {
+      const imageId = workbook.addImage({
+        base64: based64File,
+        extension: ext,
+      });
+      sheet.addImage(imageId, location);
+      console.log('Added Image = ' + imagePath);
+    }).catch((err) => {
+      console.log('Failed to Add Image to Excel => ' + err.message);
     });
   }
 

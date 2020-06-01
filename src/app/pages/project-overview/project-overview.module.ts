@@ -8,6 +8,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { ProjectOverviewPage } from './project-overview.page';
 import { File } from '@ionic-native/file/ngx';
+import { Base64 } from '@ionic-native/base64/ngx';
 
 const routes: Routes = [
   {
@@ -24,7 +25,8 @@ const routes: Routes = [
     RouterModule.forChild(routes)
   ],
   providers: [
-    File
+    File,
+    Base64
   ],
   declarations: [ProjectOverviewPage, PopoverComponent],
   entryComponents: [PopoverComponent]
