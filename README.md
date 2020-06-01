@@ -57,16 +57,26 @@ run cmd
 
 # ADB to run emulator as root
 $ > adb shell
+
 generic_x86:/ $
+
 generic_x86:/ $ exit
+
 $ > adb root
+
 restarting adb as root
+
 $ > adb shell
+
 generic_x86:/ #
 
 # ADB to run sqlite database
 adb devices
+
 adb -s emulator-xxxx shell
+
 run-as <your-package-name> 
+    
 cd data/data/<your-package-name>/databases/
+    
 sqlite3 <your-db-name>.db
