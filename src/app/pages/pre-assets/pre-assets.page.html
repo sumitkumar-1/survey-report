@@ -3,14 +3,32 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="projects"></ion-back-button>
     </ion-buttons>
+    <ion-buttons size="large" shape="round" color="medium" slot="end" (click)="toggeleView()">
+      <ion-icon name="grid" *ngIf="!isList" style="font-size: 25px; margin: 5px;"></ion-icon>
+      <ion-icon name="list" *ngIf="isList" style="font-size: 25px; margin: 5px;"></ion-icon>
+    </ion-buttons>
     <ion-title>Pre Assets</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" padding>
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Pre Asset Tab</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-md-6 *ngFor="let photo of photoService.photos; index as position">
+        <!-- <ion-img src="{{ photo.base64 ? photo.base64 : photo.webviewPath }}">
+        </ion-img> -->
+        <ion-thumbnail>
+          <ion-img src="{{ photo.base64 ? photo.base64 : photo.webviewPath }}">
+          </ion-img>
+        </ion-thumbnail>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+
+  <ion-fab vertical="bottom" horizontal="center" slot="fixed">
+    <ion-fab-button (click)="photoService.addNewToGallery()">
+      <ion-icon name="camera"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

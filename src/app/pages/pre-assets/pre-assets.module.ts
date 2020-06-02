@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { PreAssetsPage } from './pre-assets.page';
+import { PhotoService } from 'src/app/services/photo.service';
 
 const routes: Routes = [
   {
@@ -21,6 +22,7 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [PreAssetsPage]
+  declarations: [PreAssetsPage],
+  providers: [PhotoService]
 })
 export class PreAssetsPageModule {}
