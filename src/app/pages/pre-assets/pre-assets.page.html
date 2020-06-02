@@ -3,29 +3,21 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="projects"></ion-back-button>
     </ion-buttons>
-    <ion-buttons size="large" shape="round" color="medium" slot="end" (click)="toggeleView()">
-      <ion-icon name="grid" *ngIf="!isList" style="font-size: 25px; margin: 5px;"></ion-icon>
-      <ion-icon name="list" *ngIf="isList" style="font-size: 25px; margin: 5px;"></ion-icon>
+    <ion-buttons size="large" shape="round" color="medium" slot="end">
     </ion-buttons>
     <ion-title>Pre Assets</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
-  <ion-grid>
-    <ion-row>
-      <ion-col col-md-6 *ngFor="let photo of photoService.photos; index as position">
-        <!-- <ion-img src="{{ photo.base64 ? photo.base64 : photo.webviewPath }}">
-        </ion-img> -->
-        <ion-thumbnail>
-          <ion-img src="{{ photo.base64 ? photo.base64 : photo.webviewPath }}">
-          </ion-img>
-        </ion-thumbnail>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-
-
+<ion-content>
+  <ion-list class="grid-container">
+    <div *ngFor="let photo of photoService.photos; index as position" class="col col-25 item-remove-animate">
+      <ion-thumbnail>
+        <ion-img src="{{ photo.base64 ? photo.base64 : photo.webviewPath }}">
+        </ion-img>
+      </ion-thumbnail>
+    </div>
+  </ion-list>
   <ion-fab vertical="bottom" horizontal="center" slot="fixed">
     <ion-fab-button (click)="photoService.addNewToGallery()">
       <ion-icon name="camera"></ion-icon>

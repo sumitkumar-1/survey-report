@@ -1,3 +1,40 @@
-// ion-thumbnail {
-//     --size: 110px;
-// }
+.grid{
+height: 100px !important;
+}
+
+.grid-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-content: stretch;
+}
+
+.list {
+    justify-content: flex-start;
+    align-content: stretch;
+}
+ion-thumbnail {
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+}
+
+ion-item {
+    --inner-padding-end: 0px !important;
+}
+
+.list-md {
+    // padding-top: 0.5% !important;
+    // padding-bottom: 0.5% !important;
+    padding: 0.5% !important;
+}
+
+div {
+    width: 33.33333%;
+    height: 120px;
+    padding: 0.2%;
+}
+
+ion-thumbnail {
+    --size: 100%;
+}
