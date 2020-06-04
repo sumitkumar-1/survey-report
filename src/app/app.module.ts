@@ -20,7 +20,6 @@ import { NotificationsComponent } from './components/notifications/notifications
 import { ProjectInfoPageModule } from './pages/modal/project-info/project-info.module';
 
 // Service
-import { MediaService } from './services/media.service';
 import { ProjectService } from './services/project.service';
 import { DbService } from './services/db.service';
 import { SQLite } from '@ionic-native/sqlite/ngx';
@@ -28,6 +27,7 @@ import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
 import { PersistentService } from './services/persistent.service';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { File } from '@ionic-native/file/ngx';
+import { Base64 } from '@ionic-native/base64/ngx';
 
 @NgModule({
   declarations: [AppComponent, NotificationsComponent],
@@ -49,11 +49,11 @@ import { File } from '@ionic-native/file/ngx';
     SQLitePorter,
     DbService,
     Platform,
-    MediaService,
     ProjectService,
     PersistentService,
     AndroidPermissions,
     File,
+    Base64,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

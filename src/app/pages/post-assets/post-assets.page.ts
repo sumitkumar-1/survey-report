@@ -14,7 +14,7 @@ export class PostAssetsPage implements OnInit {
   }
 
   ngOnInit() {
-    this.photoService.loadSaved();
+    this.photoService.loadAssets('post');
   }
 
   // toggeleView() {

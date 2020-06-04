@@ -23,7 +23,7 @@
     </div>
   </ion-list> -->
   <ion-list class="grid-container">
-    <div *ngFor="let photo of photoService.photos; index as position" class="col col-25 item-remove-animate">
+    <div *ngFor="let photo of photoService.postPhotos; index as position" class="col col-25 item-remove-animate">
       <ion-thumbnail>
         <ion-img src="{{ photo.base64 ? photo.base64 : photo.webviewPath }}">
         </ion-img>
@@ -31,7 +31,7 @@
     </div>
   </ion-list>
   <ion-fab vertical="bottom" horizontal="center" slot="fixed">
-    <ion-fab-button (click)="photoService.addNewToGallery()">
+    <ion-fab-button (click)="photoService.addNewToGallery('post')">
       <ion-icon name="camera"></ion-icon>
     </ion-fab-button>
   </ion-fab>

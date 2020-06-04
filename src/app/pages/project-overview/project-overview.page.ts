@@ -1,9 +1,13 @@
+import { ProjectService } from 'src/app/services/project.service';
 import { Component, OnInit } from '@angular/core';
 import { PopoverController, NavController, Platform } from '@ionic/angular';
 import { PopoverComponent } from 'src/app/components/popover/popover.component';
 import { File } from '@ionic-native/file/ngx';
 import * as Excel from 'exceljs';
 import { Base64 } from '@ionic-native/base64/ngx';
+import { PersistentService } from 'src/app/services/persistent.service';
+import { Project } from 'src/app/interfaces/project';
+import { SQLiteObject } from '@ionic-native/sqlite/ngx';
 
 @Component({
   selector: 'app-project-overview',
@@ -18,12 +22,18 @@ export class ProjectOverviewPage implements OnInit {
   private exportFileDir: string;
   private assets: any;
   private k: number;
+  private exportFileName: string;
+  private currentProjectId: number;
 
   constructor(public popoverCtrl: PopoverController,
     public navCtrl: NavController,
     private platform: Platform,
     private base64: Base64,
-    private file: File) { }
+    private persistentService: PersistentService,
+    private projectService: ProjectService,
+    private file: File) {
+    this.saveDir = this.persistentService.getStorageSaveDir();
+  }
 
   ngOnInit() {
   }
@@ -60,7 +70,13 @@ export class ProjectOverviewPage implements OnInit {
   Export() {
     console.log('parent: Export');
     // code to generate Excel Sheet
-    this.generateExcelReport();
+    this.persistentService.currentProjectInfo.subscribe((projectdata: Project) => {
+      this.exportFileName = new Date() + '_' + projectdata.siteid + '_' + projectdata.sitename + '_' + 'COP.xlsx';
+      this.exportFileDir = this.persistentService.getStorageDir() + '/' + this.saveDir + '/'
+        + projectdata.projectname + '-' + projectdata.id + '/export/';
+      this.currentProjectId = projectdata.id;
+      this.initExport();
+    });
   }
 
   Close() {
@@ -69,21 +85,15 @@ export class ProjectOverviewPage implements OnInit {
 
   // Export Functions goes below
 
-  private generateExcelReport() {
-    this.initExport();
-  }
-
   private initExport() {
     if (this.platform.is('android')) {
-      this.file.checkDir(this.file.externalApplicationStorageDirectory, this.saveDir).then(() => {
+      this.file.checkDir(this.persistentService.getStorageDir(), this.saveDir).then(() => {
         console.log('Directory exists !!');
-        this.exportFileDir = this.file.externalApplicationStorageDirectory + this.saveDir;
         this.createExcel();
       }).catch((err) => {
         console.log('Directory does not exists !!, creating it ' + err.message);
-        this.file.createDir(this.file.externalApplicationStorageDirectory, this.saveDir, false).then(() => {
+        this.file.createDir(this.persistentService.getStorageDir(), this.saveDir, false).then(() => {
           console.log('Directory Created Sucessfully !!');
-          this.exportFileDir = this.file.externalApplicationStorageDirectory + this.saveDir;
           this.createExcel();
         }).catch((err1) => {
           console.log('Failed to Create Directory !!' + err1.message);
@@ -195,46 +205,42 @@ export class ProjectOverviewPage implements OnInit {
       console.log('File 1.png does not Exists ' + err.message);
     });
 
-    this.assets = [
-      this.file.externalApplicationStorageDirectory + this.saveDir + '/1.png',
-      this.file.externalApplicationStorageDirectory + this.saveDir + '/2.png',
-      this.file.externalApplicationStorageDirectory + this.saveDir + '/3.png',
-      this.file.externalApplicationStorageDirectory + this.saveDir + '/4.png',
-      this.file.externalApplicationStorageDirectory + this.saveDir + '/5.png',
-      this.file.externalApplicationStorageDirectory + this.saveDir + '/6.png',
-      this.file.externalApplicationStorageDirectory + this.saveDir + '/7.png',
-      this.file.externalApplicationStorageDirectory + this.saveDir + '/8.png',
-      this.file.externalApplicationStorageDirectory + this.saveDir + '/9.png',
-      this.file.externalApplicationStorageDirectory + this.saveDir + '/10.png',
-      this.file.externalApplicationStorageDirectory + this.saveDir + '/11.png',
-      this.file.externalApplicationStorageDirectory + this.saveDir + '/12.png',
-    ];
+    const preAssets: string[] = this.loadAssets('pre');
+    const postAssets: string[] = this.loadAssets('post');
 
-    const max_image_per_row = 5;
-    const rows = Math.ceil(this.assets.length / max_image_per_row) * 15;
-    const cols = max_image_per_row * 4;
-    this.k = 0;
-    for (let i = 2; i < rows; i += 14) {
-      console.log('Processing Row = ' + i);
-      await this.addColumnImage(cols, i, wb, pre_ws);
-    }
+    await this.addAssets(preAssets, wb, pre_ws);
+    await this.addAssets(postAssets, wb, post_ws);
 
     console.log('Saving to Excel');
 
     // save under export.xlsx
     await wb.xlsx.writeBuffer().then(data => {
       const blob = new Blob([data], { type: this.blobType });
-      this.file.writeFile(this.exportFileDir, 'export1.xlsx', blob);
+      this.file.writeFile(this.exportFileDir, this.exportFileName, blob);
     }).catch((err) => {
       console.log('Unable to Create Excel File ' + err.message);
     });
     console.log('Done Create Excel');
   }
 
-  private async addColumnImage(cols: number, i: number, workbook: Excel.Workbook, sheet: Excel.Worksheet) {
-    for (let j = 0; j < cols && this.k < this.assets.length; j += 4) {
+  private async addAssets(Assets: string[], workbook: Excel.Workbook, sheet: Excel.Worksheet) {
+    if (Assets.length === 0) {
+      return;
+    }
+    const max_image_per_row = 5;
+    const rows = Math.ceil(Assets.length / max_image_per_row) * 15;
+    const cols = max_image_per_row * 4;
+    this.k = 0;
+    for (let i = 2; i < rows; i += 14) {
+      console.log('Processing Row = ' + i);
+      await this.addColumnImage(Assets, cols, i, workbook, sheet);
+    }
+  }
+
+  private async addColumnImage(Assets: string[], cols: number, i: number, workbook: Excel.Workbook, sheet: Excel.Worksheet) {
+    for (let j = 0; j < cols && this.k < Assets.length; j += 4) {
       console.log('Image No = ' + this.k);
-      await this.addImageToExcel(this.assets[this.k], 'png', workbook,
+      await this.addImageToExcel(Assets[this.k], 'png', workbook,
         sheet, {
         tl: { col: j, row: i },
         ext: { width: 250, height: 250 },
@@ -243,6 +249,24 @@ export class ProjectOverviewPage implements OnInit {
       console.log('Image No = ' + this.k + ' added');
       this.k = this.k + 1;
     }
+  }
+
+  public loadAssets(assettype: string): string[] {
+    const Assets: string[] = [];
+    this.persistentService.dbDataSource.subscribe((db: SQLiteObject) => {
+      if (db != null) {
+        this.projectService.getProjectAssets(this.currentProjectId, assettype, db).then(res => {
+          if (res.rows.length > 0) {
+            for (let i = 0; i < res.rows.length; i++) {
+              Assets.push(res.rows.item(i).assetpath);
+            }
+          }
+        }).catch((err) => {
+          console.log('DbError: ' + err);
+        });
+      }
+    });
+    return Assets;
   }
 
   private async addImageToExcel(imagePath: string, ext: any, workbook: Excel.Workbook, sheet: Excel.Worksheet, location: any) {

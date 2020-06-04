@@ -1,8 +1,14 @@
+import { ProjectAssets } from './../interfaces/projectassets';
+import { ProjectService } from './project.service';
 import { Injectable } from '@angular/core';
 import { Plugins, CameraResultType, Capacitor, FilesystemDirectory, CameraPhoto, CameraSource } from '@capacitor/core';
 import { Photo } from '../interfaces/photo.modal';
 import { Platform } from '@ionic/angular';
-
+import { File } from '@ionic-native/file/ngx';
+import { PersistentService } from './persistent.service';
+import { Project } from '../interfaces/project';
+import { SQLiteObject } from '@ionic-native/sqlite/ngx';
+import { Base64 } from '@ionic-native/base64/ngx';
 
 const { Camera, Filesystem, Storage } = Plugins;
 
@@ -12,8 +18,17 @@ const { Camera, Filesystem, Storage } = Plugins;
 export class PhotoService {
   public photos: Photo[] = [];
   private PHOTO_STORAGE = 'photos';
-  constructor(private platform: Platform) { }
-  public async addNewToGallery() {
+
+  public prePhotos: Photo[] = [];
+  public postPhotos: Photo[] = [];
+
+  constructor(private platform: Platform,
+    private file: File,
+    private projectService: ProjectService,
+    private base64: Base64,
+    private persistentService: PersistentService) { }
+
+  public async addNewToGallery(type: string) {
     const capturedPhoto = await Camera.getPhoto({
       quality: 100,
       resultType: CameraResultType.Uri,
@@ -22,96 +37,68 @@ export class PhotoService {
       // width: 500
       // source: CameraSource.Camera,
     });
-    // Save the picture and add it to photo collection
-    const savedImageFile = await this.savePicture(capturedPhoto);
-    this.photos.unshift(savedImageFile);
-    Storage.set({
-      key: this.PHOTO_STORAGE,
-      value: this.platform.is('hybrid')
-        ? JSON.stringify(this.photos)
-        : JSON.stringify(this.photos.map(p => {
-          // Don't save the base64 representation of the photo data,
-          // since it's already saved on the Filesystem
-          const photoCopy = { ...p };
-          delete photoCopy.base64;
-
-          return photoCopy;
-        }))
-    });
-  }
-  private async savePicture(cameraPhoto: CameraPhoto) {
-    // Convert photo to base64 format, required by Filesystem API to save
-    const base64Data = await this.readAsBase64(cameraPhoto);
-
-    // Write the file to the data directory
-    const fileName = new Date().getTime() + '.jpeg';
-    const savedFile = await Filesystem.writeFile({
-      path: fileName,
-      data: base64Data,
-      directory: FilesystemDirectory.Data
-    });
-
-    if (this.platform.is('hybrid')) {
-      // Display the new image by rewriting the 'file://' path to HTTP
-      // Details: https://ionicframework.com/docs/building/webview#file-protocol
-      return {
-        filepath: savedFile.uri,
-        webviewPath: Capacitor.convertFileSrc(savedFile.uri),
-      };
-    } else {
-      // Use webPath to display the new image instead of base64 since it's
-      // already loaded into memory
-      return {
-        filepath: fileName,
-        webviewPath: cameraPhoto.webPath
-      };
-    }
-  }
-  private async readAsBase64(cameraPhoto: CameraPhoto) {
-    // "hybrid" will detect Cordova or Capacitor
-    if (this.platform.is('hybrid')) {
-      // Read the file into base64 format
-      const file = await Filesystem.readFile({
-        path: cameraPhoto.path
-      });
-
-      return file.data;
-    } else {
-      // Fetch the photo, read as a blob, then convert to base64 format
-      const response = await fetch(cameraPhoto.webPath);
-      const blob = await response.blob();
-
-      return await this.convertBlobToBase64(blob) as string;
-    }
-  }
-
-  convertBlobToBase64 = (blob: Blob) => new Promise((resolve, reject) => {
-    const reader = new FileReader;
-    reader.onerror = reject;
-    reader.onload = () => {
-      resolve(reader.result);
-    };
-    reader.readAsDataURL(blob);
-  })
-  public async loadSaved() {
-    // Retrieve cached photo array data
-    const photos = await Storage.get({ key: this.PHOTO_STORAGE });
-    this.photos = JSON.parse(photos.value) || [];
-
-    // Easiest way to detect when running on the web:
-    // “when the platform is NOT hybrid, do this”
-    if (!this.platform.is('hybrid')) {
-      // Display the photo by reading into base64 format
-      for (const photo of this.photos) {
-        // Read each saved photo's data from the Filesystem
-        const readFile = await Filesystem.readFile({
-          path: photo.filepath,
-          directory: FilesystemDirectory.Data
+    console.log('Image Data = ' + capturedPhoto.path);
+    this.persistentService.currentProjectInfo.subscribe((projectdata: Project) => {
+      const filename = capturedPhoto.path.substring(capturedPhoto.path.lastIndexOf('/') + 1);
+      const newpath = this.persistentService.getStorageDir() + '/' + this.persistentService.getStorageSaveDir() + '/' +
+        projectdata.projectname + '-' + projectdata.id + '/' + type + '/';
+      const newfileName = new Date().getTime() + '.jpg';
+      this.file.moveFile(this.file.cacheDirectory, filename, newpath, newfileName).then(() => {
+        console.log('File Moved !!');
+        // add it to database
+        const projAsset: ProjectAssets = {
+          id: null,
+          projectid: projectdata.id,
+          assettype: type,
+          assetpath: newpath + newfileName
+        };
+        this.persistentService.dbDataSource.subscribe((db: SQLiteObject) => {
+          if (db != null) {
+            this.projectService.addProjectAssets(projAsset, db).then((res) => {
+              alert('Success: Image - ' + res.insertId + ' added sucessfully !!');
+              this.base64.encodeFile(projAsset.assetpath).then((based64File: string) => {
+                if (type === 'pre') {
+                  this.prePhotos.push({ filepath: '', webviewPath: '', base64: based64File });
+                } else if (type === 'post') {
+                  this.postPhotos.push({ filepath: '', webviewPath: '', base64: based64File });
+                }
+              }).catch((err) => {
+                console.log('Invalid Asset Path in Database');
+              });
+            }).catch((err) => {
+              console.log('DbError: ' + err);
+            });
+          }
         });
+      }).catch((err) => {
+        console.log('Error Moving Files ' + err.message);
+      });
+    });
+  }
 
-        // Web platform only: Save the photo into the base64 field
-        photo.base64 = `data:image/jpeg;base64,${readFile.data}`;
+  public loadAssets(assettype: string) {
+    this.persistentService.dbDataSource.subscribe((db: SQLiteObject) => {
+      if (db != null) {
+        this.persistentService.currentProjectInfo.subscribe((projectdata: Project) => {
+          this.projectService.getProjectAssets(projectdata.id, assettype, db).then(res => {
+            if (res.rows.length > 0) {
+              for (let i = 0; i < res.rows.length; i++) {
+                this.base64.encodeFile(res.rows.item(i).assetpath).then((based64File: string) => {
+                  if (assettype === 'pre') {
+                    this.prePhotos.push({ filepath: '', webviewPath: '', base64: based64File });
+                  } else if (assettype === 'post') {
+                    this.postPhotos.push({ filepath: '', webviewPath: '', base64: based64File });
+                  }
+                }).catch((err) => {
+                  console.log('Invalid Asset Path in Database');
+                });
+              }
+            }
+          }).catch((err) => {
+            console.log('DbError: ' + err);
+          });
+        });
       }
-    }
+    });
   }
 }

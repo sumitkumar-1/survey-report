@@ -238,6 +238,7 @@ export class ProjectsPage {
 
   // view trip detail
   viewProject(project: Project) {
+    this.persistentService.updateCurrentProjectInfo(project);
     // this.nav.push(ProjectHomePage, {id: id});
     // this.navCtrl.navigateRoot('/project-home', {data: project});
     const navigationExtras: NavigationExtras = {

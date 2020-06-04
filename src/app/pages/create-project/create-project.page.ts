@@ -99,11 +99,14 @@ export class CreateProjectPage implements OnInit {
     //       ---pre
     //       ---post
     //       ---export
-    await this.createDirectory(this.file.externalApplicationStorageDirectory, 'sitesurvey');
-    await this.createDirectory(this.file.externalApplicationStorageDirectory, 'sitesurvey/' + projectName);
-    await this.createDirectory(this.file.externalApplicationStorageDirectory, 'sitesurvey/' + projectName + '/pre');
-    await this.createDirectory(this.file.externalApplicationStorageDirectory, 'sitesurvey/' + projectName + '/post');
-    await this.createDirectory(this.file.externalApplicationStorageDirectory, 'sitesurvey/' + projectName + '/export');
+    await this.createDirectory(this.persistentService.getStorageDir(), this.persistentService.getStorageSaveDir());
+    await this.createDirectory(this.persistentService.getStorageDir(), this.persistentService.getStorageSaveDir() + '/' + projectName);
+    await this.createDirectory(this.persistentService.getStorageDir(),
+      this.persistentService.getStorageSaveDir() + '/' + projectName + '/pre');
+    await this.createDirectory(this.persistentService.getStorageDir(),
+      this.persistentService.getStorageSaveDir() + '/' + projectName + '/post');
+    await this.createDirectory(this.persistentService.getStorageDir(),
+      this.persistentService.getStorageSaveDir() + '/' + projectName + '/export');
   }
 
   private async createDirectory(path: string, dirname: string) {
