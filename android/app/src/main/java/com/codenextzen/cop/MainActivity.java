@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package com.codenextzen.cop;
 
 import android.os.Bundle;
 

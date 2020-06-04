@@ -1,6 +1,6 @@
 {
-  "appId": "io.ionic.starter",
-  "appName": "ionic4Start",
+  "appId": "com.codenextzen.cop",
+  "appName": "COP Survey Report",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",
@@ -20,11 +20,5 @@
       "SplashScreen": "screen",
       "SplashScreenDelay": "3000"
     }
-  },
-  "server": {
-    "url": "http://192.168.0.104:8100",
-    "cleartext": true,
-    "originalUrl": "http://192.168.0.106:8100",
-    "originalCleartext": true
   }
 }
