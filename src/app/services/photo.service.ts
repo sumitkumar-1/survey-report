@@ -40,7 +40,7 @@ export class PhotoService {
     console.log('Image Data = ' + capturedPhoto.path);
     this.persistentService.currentProjectInfo.subscribe((projectdata: Project) => {
       const filename = capturedPhoto.path.substring(capturedPhoto.path.lastIndexOf('/') + 1);
-      const newpath = this.persistentService.getStorageDir() + '/' + this.persistentService.getStorageSaveDir() + '/' +
+      const newpath = this.persistentService.getStorageDir() + this.persistentService.getStorageSaveDir() + '/' +
         projectdata.projectname + '-' + projectdata.id + '/' + type + '/';
       const newfileName = new Date().getTime() + '.jpg';
       this.file.moveFile(this.file.cacheDirectory, filename, newpath, newfileName).then(() => {

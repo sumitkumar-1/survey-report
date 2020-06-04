@@ -114,36 +114,8 @@ export class ProjectService {
   }
 
   /* get all project details */
-  public getProjectDetails(db: SQLiteObject) {
-    db.executeSql('SELECT * FROM pm_project_details', []).then(res => {
-      const items: ProjectDetails[] = [];
-      if (res.rows.length > 0) {
-        for (let i = 0; i < res.rows.length; i++) {
-          items.push({
-            id: res.rows.item(i).id,
-            projectid: res.rows.item(i).projectid,
-            aspname: res.rows.item(i).aspname,
-            completeddate: res.rows.item(i).completeddate,
-            shift: res.rows.item(i).shift,
-            currentstatus: res.rows.item(i).currentstatus,
-            e911completed: res.rows.item(i).e911completed,
-            srscompleted: res.rows.item(i).srscompleted,
-            usedlongcable: res.rows.item(i).usedlongcable,
-            dusasset: res.rows.item(i).dusasset,
-            dusserial: res.rows.item(i).dusserial,
-            dulasset: res.rows.item(i).dulasset,
-            dulserial: res.rows.item(i).dusserial,
-            xmuasset: res.rows.item(i).dulasset,
-            xmuserial: res.rows.item(i).dusserial,
-            installedserial: res.rows.item(i).dulasset,
-            installedasset: res.rows.item(i).dulasset
-          });
-        }
-      }
-      return items;
-    }).catch((err) => {
-      console.log('DbError: ' + err);
-    });
+  public getProjectDetails(projectid: number, db: SQLiteObject) {
+    return db.executeSql('SELECT * FROM pm_project_details WHERE projectid = ?', [projectid]);
   }
 
   /* get all project details */

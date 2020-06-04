@@ -1,3 +1,4 @@
+import { ProjectDetails } from './../../interfaces/projectdetails';
 import { ProjectService } from 'src/app/services/project.service';
 import { Component, OnInit } from '@angular/core';
 import { PopoverController, NavController, Platform } from '@ionic/angular';
@@ -20,10 +21,12 @@ export class ProjectOverviewPage implements OnInit {
   private blobType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
   private TEMPLATE_WORKSHEETS = ['Summary', 'PRE PICTURES', 'POST PICTURES', 'CT'];
   private exportFileDir: string;
-  private assets: any;
   private k: number;
   private exportFileName: string;
-  private currentProjectId: number;
+  private projectinfodata: Project;
+  private projectdetaildata: ProjectDetails;
+  private preAssets: string[] = [];
+  private postAssets: string[] = [];
 
   constructor(public popoverCtrl: PopoverController,
     public navCtrl: NavController,
@@ -71,11 +74,39 @@ export class ProjectOverviewPage implements OnInit {
     console.log('parent: Export');
     // code to generate Excel Sheet
     this.persistentService.currentProjectInfo.subscribe((projectdata: Project) => {
-      this.exportFileName = new Date() + '_' + projectdata.siteid + '_' + projectdata.sitename + '_' + 'COP.xlsx';
-      this.exportFileDir = this.persistentService.getStorageDir() + '/' + this.saveDir + '/'
+      this.exportFileName = new Date().getTime() + '_' + projectdata.siteid + '_' + projectdata.sitename + '_' + 'COP.xlsx';
+      this.exportFileDir = this.persistentService.getStorageDir() + this.saveDir + '/'
         + projectdata.projectname + '-' + projectdata.id + '/export/';
-      this.currentProjectId = projectdata.id;
-      this.initExport();
+      this.projectinfodata = projectdata;
+      // get project details
+      this.persistentService.dbDataSource.subscribe((db: SQLiteObject) => {
+        if (db != null) {
+          this.projectService.getProjectDetails(projectdata.id, db).then(res => {
+            this.projectdetaildata = {
+              id: res.rows.item(0).id,
+              projectid: res.rows.item(0).projectid,
+              aspname: res.rows.item(0).aspname,
+              completeddate: res.rows.item(0).completeddate,
+              shift: res.rows.item(0).shift,
+              currentstatus: res.rows.item(0).currentstatus,
+              e911completed: res.rows.item(0).e911completed,
+              srscompleted: res.rows.item(0).srscompleted,
+              usedlongcable: res.rows.item(0).usedlongcable,
+              dusasset: res.rows.item(0).dusasset,
+              dusserial: res.rows.item(0).dusserial,
+              dulasset: res.rows.item(0).dulasset,
+              dulserial: res.rows.item(0).dusserial,
+              xmuasset: res.rows.item(0).dulasset,
+              xmuserial: res.rows.item(0).dusserial,
+              installedserial: res.rows.item(0).dulasset,
+              installedasset: res.rows.item(0).dulasset
+            };
+            this.initExport();
+          }).catch((err) => {
+            console.log('DbError: ' + err);
+          });
+        }
+      });
     });
   }
 
@@ -153,22 +184,54 @@ export class ProjectOverviewPage implements OnInit {
     this.createCell(summary_ws, 'B21', '', styleFontBlack, { left: { style: 'thick' }, bottom: { style: 'thick' } }, '');
     this.createCell(summary_ws, 'H21', '', styleFontBlack, { right: { style: 'thick' }, bottom: { style: 'thick' } }, '');
 
-    const projectdata = ['Market:', 'Site ID:', 'Site Name:', 'Contractor:', 'Date:', 'Project:', 'Installation:', 'On Site Tech:',];
+    const projectdata = ['Market:', 'Site ID:', 'Site Name:', 'Contractor:', 'Date:', 'Project:', 'Installation:', 'On Site Tech:'];
+    const projectinfo = [
+      this.projectinfodata.market,
+      this.projectinfodata.siteid,
+      this.projectinfodata.sitename,
+      this.projectinfodata.contractor,
+      this.projectinfodata.startdate,
+      this.projectinfodata.projectname,
+      this.projectinfodata.installation,
+      this.projectinfodata.onsitetech
+    ];
     for (let i = 0; i < projectdata.length; i++) {
       this.createCell(summary_ws, 'D' + (i + 6).toString(), projectdata[i], styleFontRed, cellBorder, '');
-      this.createCell(summary_ws, 'E' + (i + 6).toString(), '', styleFontBlack, cellBorder, '');
+      this.createCell(summary_ws, 'E' + (i + 6).toString(), projectinfo[i], styleFontBlack, cellBorder, '');
     }
 
     this.createCell(summary_ws, 'B17', 'Additional Notes:', styleFontBlack, cellBorder, cellFillYellow);
+    this.createCell(summary_ws, 'B18', this.projectinfodata.additionalnotes, styleFontBlack, cellBorder, '');
     this.createCell(summary_ws, 'A23', 'Completion Report:', styleFontBlack, cellBorder, cellFillYellow);
 
-    const projectdetail = ['Site:', 'ASP Name', 'FE Name and Number', 'Date completed', 'Shift (Day/Night)', 'Status', 'E911 Complete',
-      'SRS complete', 'Used Long CPRI cable? (Yes or No)', '1st Decom DUS Serial', '1st Decom DUS Asset', '1st Decom DUL Serial',
-      '1st Decom DUL Asset', 'Decom XMU Serial', 'Decom XMU Asset', 'Installed BB6630 Serial', 'Installed BB6630 Asset'];
+    const projectdetailheader = ['Site:', 'ASP Name', 'FE Name and Number', 'Date completed', 'Shift (Day/Night)', 'Status',
+      'E911 Complete', 'SRS complete', 'Used Long CPRI cable? (Yes or No)', '1st Decom DUS Serial', '1st Decom DUS Asset',
+      '1st Decom DUL Serial', '1st Decom DUL Asset', 'Decom XMU Serial', 'Decom XMU Asset', 'Installed BB6630 Serial',
+      'Installed BB6630 Asset'];
 
-    for (let i = 0; i < projectdetail.length; i++) {
-      this.createCell(summary_ws, String.fromCharCode(65 + i) + '24', projectdetail[i], styleFontBlack, cellBorder, cellFillSkyBlue);
-      this.createCell(summary_ws, String.fromCharCode(65 + i) + '25', '', styleFontBlack, cellBorder, '');
+    const projectdatadetails = [
+      this.projectinfodata.siteid,
+      this.projectdetaildata.aspname,
+      this.projectinfodata.onsitetech,
+      this.projectdetaildata.completeddate,
+      this.projectdetaildata.shift,
+      this.projectdetaildata.currentstatus,
+      this.projectdetaildata.e911completed,
+      this.projectdetaildata.srscompleted,
+      this.projectdetaildata.usedlongcable,
+      this.projectdetaildata.dusserial,
+      this.projectdetaildata.dusasset,
+      this.projectdetaildata.dulserial,
+      this.projectdetaildata.dulasset,
+      this.projectdetaildata.xmuserial,
+      this.projectdetaildata.xmuasset,
+      this.projectdetaildata.installedserial,
+      this.projectdetaildata.installedasset
+    ];
+
+    for (let i = 0; i < projectdetailheader.length; i++) {
+      this.createCell(summary_ws, String.fromCharCode(65 + i) + '24', projectdetailheader[i], styleFontBlack, cellBorder, cellFillSkyBlue);
+      this.createCell(summary_ws, String.fromCharCode(65 + i) + '25', projectdatadetails[i].toString(), styleFontBlack, cellBorder, '');
     }
 
     summary_ws.getRow(24).alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
@@ -199,19 +262,18 @@ export class ProjectOverviewPage implements OnInit {
 
     console.log(this.exportFileDir);
 
-    this.file.checkFile(this.exportFileDir + '/', '1.png').then(() => {
-      console.log('File 1.png Exists');
-    }).catch((err) => {
-      console.log('File 1.png does not Exists ' + err.message);
-    });
+    await this.loadAssets('pre');
+    await this.loadAssets('post');
 
-    const preAssets: string[] = this.loadAssets('pre');
-    const postAssets: string[] = this.loadAssets('post');
+    console.log('Total Pre Assets = ' + this.preAssets.length);
+    console.log('Total Post Assets = ' + this.postAssets.length);
 
-    await this.addAssets(preAssets, wb, pre_ws);
-    await this.addAssets(postAssets, wb, post_ws);
+    await this.addAssets(this.preAssets, wb, pre_ws);
+    await this.addAssets(this.postAssets, wb, post_ws);
 
     console.log('Saving to Excel');
+    console.log('Dir = ' + this.exportFileDir);
+    console.log('Filename = ' + this.exportFileName);
 
     // save under export.xlsx
     await wb.xlsx.writeBuffer().then(data => {
@@ -251,22 +313,29 @@ export class ProjectOverviewPage implements OnInit {
     }
   }
 
-  public loadAssets(assettype: string): string[] {
-    const Assets: string[] = [];
-    this.persistentService.dbDataSource.subscribe((db: SQLiteObject) => {
-      if (db != null) {
-        this.projectService.getProjectAssets(this.currentProjectId, assettype, db).then(res => {
-          if (res.rows.length > 0) {
-            for (let i = 0; i < res.rows.length; i++) {
-              Assets.push(res.rows.item(i).assetpath);
+  public async loadAssets(assettype: string) {
+    return new Promise((resolve) => {
+      this.persistentService.dbDataSource.subscribe((db: SQLiteObject) => {
+        if (db != null) {
+          this.projectService.getProjectAssets(this.projectinfodata.id, assettype, db).then(res => {
+            if (res.rows.length > 0) {
+              const Assets: string[] = [];
+              for (let i = 0; i < res.rows.length; i++) {
+                Assets.push(res.rows.item(i).assetpath);
+              }
+              if (assettype === 'pre') {
+                this.preAssets = Assets;
+              } else if (assettype === 'post') {
+                this.postAssets = Assets;
+              }
             }
-          }
-        }).catch((err) => {
-          console.log('DbError: ' + err);
-        });
-      }
+            resolve('done');
+          }).catch((err) => {
+            console.log('DbError: ' + err);
+          });
+        }
+      });
     });
-    return Assets;
   }
 
   private async addImageToExcel(imagePath: string, ext: any, workbook: Excel.Workbook, sheet: Excel.Worksheet, location: any) {
