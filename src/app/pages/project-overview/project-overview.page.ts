@@ -9,6 +9,7 @@ import { Base64 } from '@ionic-native/base64/ngx';
 import { PersistentService } from 'src/app/services/persistent.service';
 import { Project } from 'src/app/interfaces/project';
 import { SQLiteObject } from '@ionic-native/sqlite/ngx';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-project-overview',
@@ -17,6 +18,7 @@ import { SQLiteObject } from '@ionic-native/sqlite/ngx';
 })
 export class ProjectOverviewPage implements OnInit {
 
+  public onProjectDetailAdd: FormGroup;
   private saveDir = 'sitesurvey';
   private blobType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
   private TEMPLATE_WORKSHEETS = ['Summary', 'PRE PICTURES', 'POST PICTURES', 'CT'];
@@ -25,10 +27,13 @@ export class ProjectOverviewPage implements OnInit {
   private exportFileName: string;
   private projectinfodata: Project;
   private projectdetaildata: ProjectDetails;
+  private dbInfo: SQLiteObject;
   private preAssets: string[] = [];
   private postAssets: string[] = [];
 
+  private edit = false;
   constructor(public popoverCtrl: PopoverController,
+    private formBuilder: FormBuilder,
     public navCtrl: NavController,
     private platform: Platform,
     private base64: Base64,
@@ -36,9 +41,60 @@ export class ProjectOverviewPage implements OnInit {
     private projectService: ProjectService,
     private file: File) {
     this.saveDir = this.persistentService.getStorageSaveDir();
+    this.projectdetaildata = {
+      id: null,
+      projectid: null,
+      aspname: '',
+      completeddate: null,
+      shift: '',
+      currentstatus: '',
+      e911completed: '',
+      srscompleted: '',
+      usedlongcable: '',
+      dusasset: '',
+      dusserial: '',
+      dulasset: '',
+      dulserial: '',
+      xmuasset: '',
+      xmuserial: '',
+      installedserial: '',
+      installedasset: ''
+    };
   }
 
   ngOnInit() {
+    this.onProjectDetailAdd = this.formBuilder.group({
+      aspname: [null, Validators.compose([])],
+      completedate: [null, Validators.compose([])],
+      shift: [null, Validators.compose([])],
+      currentStatus: [null, Validators.compose([])],
+      e911completed: [null, Validators.compose([])],
+      srsCompleted: [null, Validators.compose([])],
+      usedLongCable: [null, Validators.compose([])],
+      dusAssets: [null, Validators.compose([])],
+      dusSerial: [null, Validators.compose([])],
+      dulAssets: [null, Validators.compose([])],
+      dulSerial: [null, Validators.compose([])],
+      xmuAsset: [null, Validators.compose([])],
+      xmuSerial: [null, Validators.compose([])],
+      installedSerial: [null, Validators.compose([])],
+      installedAsset: [null, Validators.compose([])]
+    });
+    this.persistentService.currentProjectInfo.subscribe((project: Project) => {
+      if (project !== null) {
+        this.projectinfodata = project;
+        this.persistentService.dbDataSource.subscribe((db: SQLiteObject) => {
+          if (db != null) {
+            this.dbInfo = db;
+            this.projectService.getProjectDetails(this.projectinfodata.id, db).then((projectDetail: any) => {
+              if (projectDetail !== null) {
+                this.projectdetaildata = projectDetail.rows.item(0);
+              }
+            });
+          }
+        });
+      }
+    });
   }
 
   async presentPopover(myEvent) {
@@ -66,6 +122,42 @@ export class ProjectOverviewPage implements OnInit {
   }
 
   Save() {
+    if (this.projectinfodata !== null && this.projectinfodata !== undefined
+      && this.dbInfo !== null && this.dbInfo !== undefined) {
+      const projDetail: ProjectDetails = {
+        id: null,
+        projectid: this.projectinfodata.id,
+        aspname: this.onProjectDetailAdd.controls.aspname.value,
+        completeddate: this.onProjectDetailAdd.controls.completedate.value,
+        shift: this.onProjectDetailAdd.controls.shift.value,
+        currentstatus: this.onProjectDetailAdd.controls.currentStatus.value,
+        e911completed: this.onProjectDetailAdd.controls.e911completed.value,
+        srscompleted: this.onProjectDetailAdd.controls.srsCompleted.value,
+        usedlongcable: this.onProjectDetailAdd.controls.usedLongCable.value,
+        dusasset: this.onProjectDetailAdd.controls.dusAssets.value,
+        dusserial: this.onProjectDetailAdd.controls.dusSerial.value,
+        dulasset: this.onProjectDetailAdd.controls.dulAssets.value,
+        dulserial: this.onProjectDetailAdd.controls.dulSerial.value,
+        xmuasset: this.onProjectDetailAdd.controls.xmuAsset.value,
+        xmuserial: this.onProjectDetailAdd.controls.xmuSerial.value,
+        installedserial: this.onProjectDetailAdd.controls.installedSerial.value,
+        installedasset: this.onProjectDetailAdd.controls.installedAsset.value,
+      };
+      try {
+        this.projectService.addProjectDetails(projDetail, this.dbInfo).then((projectDetail) => {
+          console.log(projectDetail);
+          alert('added successfully');
+        }, (error) => { console.log(error) });
+        this.projectService.getProjectDetails(this.projectinfodata.id, this.dbInfo).then((projectDetail: any) => {
+          if (projectDetail !== null) {
+            this.projectdetaildata = projectDetail.rows.item(0);
+          }
+        });
+        this.edit = false;
+      } catch (error) {
+        alert(error);
+      }
+    }
     console.log('parent: Save');
     // code to save the project details
   }
@@ -73,47 +165,24 @@ export class ProjectOverviewPage implements OnInit {
   Export() {
     console.log('parent: Export');
     // code to generate Excel Sheet
-    this.persistentService.currentProjectInfo.subscribe((projectdata: Project) => {
-      this.exportFileName = new Date().getTime() + '_' + projectdata.siteid + '_' + projectdata.sitename + '_' + 'COP.xlsx';
+    if (this.projectinfodata !== null && this.projectinfodata !== undefined
+      && this.dbInfo !== null && this.dbInfo !== undefined
+      && this.projectdetaildata !== null && this.projectdetaildata !== undefined) {
+      this.exportFileName = new Date().getTime() + '_' + this.projectinfodata.siteid + '_' +
+        this.projectinfodata.sitename + '_' + 'COP.xlsx';
       this.exportFileDir = this.persistentService.getStorageDir() + this.saveDir + '/'
-        + projectdata.projectname + '-' + projectdata.id + '/export/';
-      this.projectinfodata = projectdata;
-      // get project details
-      this.persistentService.dbDataSource.subscribe((db: SQLiteObject) => {
-        if (db != null) {
-          this.projectService.getProjectDetails(projectdata.id, db).then(res => {
-            this.projectdetaildata = {
-              id: res.rows.item(0).id,
-              projectid: res.rows.item(0).projectid,
-              aspname: res.rows.item(0).aspname,
-              completeddate: res.rows.item(0).completeddate,
-              shift: res.rows.item(0).shift,
-              currentstatus: res.rows.item(0).currentstatus,
-              e911completed: res.rows.item(0).e911completed,
-              srscompleted: res.rows.item(0).srscompleted,
-              usedlongcable: res.rows.item(0).usedlongcable,
-              dusasset: res.rows.item(0).dusasset,
-              dusserial: res.rows.item(0).dusserial,
-              dulasset: res.rows.item(0).dulasset,
-              dulserial: res.rows.item(0).dusserial,
-              xmuasset: res.rows.item(0).dulasset,
-              xmuserial: res.rows.item(0).dusserial,
-              installedserial: res.rows.item(0).dulasset,
-              installedasset: res.rows.item(0).dulasset
-            };
-            this.initExport();
-          }).catch((err) => {
-            console.log('DbError: ' + err);
-          });
-        }
-      });
-    });
+        + this.projectinfodata.projectname + '-' + this.projectinfodata.id + '/export/';
+      this.initExport();
+    }
   }
 
   Close() {
     console.log('parent: Close');
   }
 
+  editProjectDetails() {
+    this.edit = true;
+  }
   // Export Functions goes below
 
   private initExport() {
@@ -360,5 +429,4 @@ export class ProjectOverviewPage implements OnInit {
       cell.fill = fill;
     }
   }
-
 }

@@ -11,7 +11,8 @@
 
 <ion-content>
   <ion-list class="grid-container">
-    <div *ngFor="let photo of photoService.prePhotos; index as position" class="col col-25 item-remove-animate">
+    <div *ngFor="let photo of photoService.prePhotos; index as position" class="col col-25 item-remove-animate"
+    (click)="presentImage(photo)">
       <ion-thumbnail>
         <ion-img src="{{ photo.base64 ? photo.base64 : photo.webviewPath }}">
         </ion-img>

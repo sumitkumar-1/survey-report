@@ -10,9 +10,7 @@ const routes: Routes = [
   { path: 'projects', loadChildren: './pages/projects/projects.module#ProjectsPageModule' },
   { path: 'project-info', loadChildren: './pages/modal/project-info/project-info.module#ProjectInfoPageModule' },
   { path: 'create-project', loadChildren: './pages/create-project/create-project.module#CreateProjectPageModule' },
-  // { path: 'project-home', loadChildren: './pages/project-home/project-home.module#ProjectHomePageModule' }
-  { path: 'phome', loadChildren: () => import('./pages/project-home/project-home.module').then(m => m.ProjectHomePageModule)}
-
+  { path: 'phome', loadChildren: () => import('./pages/project-home/project-home.module').then(m => m.ProjectHomePageModule)},
 ];
 
 @NgModule({
