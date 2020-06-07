@@ -9,9 +9,6 @@ BUILD_PARAM = "--prod --release"
 
 pipeline {
     agent any
-    environment {
-         PATH="C:/WINDOWS/system32:C:/Users/sumit/AppData/Roaming/npm:C:/Users/sumit/AppData/Local/Android/Sdk/build-tools/28.0.3:C:/Program Files/nodejs"
-      }
     stages {
         stage('NPM Setup') {
             steps {
@@ -21,29 +18,27 @@ pipeline {
         stage('Add Platform') {
             steps {
                 bat "rmdir /S /Q ${PLATFORM}"
-                bat "set PATH=C:/Users/sumit/AppData/Roaming/npm"
-                bat "ionic cap add ${PLATFORM}"
+                bat "C:/Users/sumit/AppData/Roaming/npm/ionic cap add ${PLATFORM}"
             }
         }
         stage("Platform Build") {
             steps {
-                bat "ionic cap build ${PLATFORM} ${BUILD_PARAM}"
+                bat "C:/Users/sumit/AppData/Roaming/npm/ionic cap build ${PLATFORM} ${BUILD_PARAM}"
             }
         }
         stage('APK KeyGen') {
             steps {
-                bat "keytool -genkey -v -keystore ${KEY_FILE} -alias ${APP_NAME} -keyalg RSA -keysize 2048 -validity 10000"
+                bat "C:/Program Files/Java/jdk1.8.0_251/bin/keytool -genkey -v -keystore ${KEY_FILE} -alias ${APP_NAME} -keyalg RSA -keysize 2048 -validity 10000"
             }
         }
         stage('APK Sign') {
             steps {
-                bat "jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ${KEY_FILE} ${APP_NAME}-release-unsigned.apk ${APP_NAME}"
+                bat "C:/Program Files/Java/jdk1.8.0_251/bin/jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ${KEY_FILE} ${APP_NAME}-release-unsigned.apk ${APP_NAME}"
             }
         }
         stage('APK Align') {
             steps {
-                bat 'set PATH=C:/Users/sumit/AppData/Local/Android/Sdk/build-tools/28.0.3'
-                bat "zipalign -v 4 ${APP_NAME}-release-unsigned.apk ${APP_NAME}.apk"
+                bat "C:/Users/sumit/AppData/Local/Android/Sdk/build-tools/28.0.3/zipalign -v 4 ${APP_NAME}-release-unsigned.apk ${APP_NAME}.apk"
             }
         }
     }
