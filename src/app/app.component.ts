@@ -6,6 +6,8 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { Pages } from './interfaces/pages';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+import { PersistentService } from './services/persistent.service';
+import { Users } from './interfaces/Users';
 
 @Component({
   selector: 'app-root',
@@ -15,12 +17,14 @@ import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 export class AppComponent {
 
   public appPages: Array<Pages>;
+  public userDetail: Users;
 
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     public navCtrl: NavController,
+    private persistentService: PersistentService,
     public androidPermissions: AndroidPermissions
   ) {
     // check permissions before proceding
@@ -55,6 +59,13 @@ export class AppComponent {
       }
     ];
     this.initializeApp();
+    this.loadUserData();
+  }
+
+  loadUserData() {
+    this.persistentService.userDetails.subscribe((data: Users) => {
+      this.userDetail = data;
+    });
   }
 
   initializeApp() {

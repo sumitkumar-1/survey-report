@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, LoadingController, ToastController } from '@ionic/angular';
+import { PersistentService } from 'src/app/services/persistent.service';
+import { Users } from 'src/app/interfaces/Users';
 
 
 @Component({
@@ -9,13 +11,19 @@ import { NavController, LoadingController, ToastController } from '@ionic/angula
 })
 export class EditProfilePage implements OnInit {
 
+  public userDetail: Users;
+
   constructor(
     public navCtrl: NavController,
     public loadingCtrl: LoadingController,
+    private persistentService: PersistentService,
     public toastCtrl: ToastController
     ) { }
 
   ngOnInit() {
+    this.persistentService.userDetails.subscribe((data: Users) => {
+      this.userDetail = data;
+    });
   }
 
   async sendData() {

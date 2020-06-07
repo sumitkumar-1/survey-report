@@ -5,6 +5,8 @@ import { DbService } from 'src/app/services/db.service';
 import { SQLiteObject } from '@ionic-native/sqlite/ngx';
 import { PersistentService } from 'src/app/services/persistent.service';
 import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
+import { ProjectService } from '../../services/project.service';
+import { Users } from 'src/app/interfaces/Users';
 
 @Component({
   selector: 'app-login',
@@ -23,6 +25,7 @@ export class LoginPage implements OnInit {
     private formBuilder: FormBuilder,
     private dbService: DbService,
     private persistentService: PersistentService,
+    private projectService: ProjectService,
     private sqLitePorter: SQLitePorter,
   ) { }
 
@@ -97,7 +100,31 @@ export class LoginPage implements OnInit {
       this.dbService.bootstrapdb().subscribe((sql) => {
         this.sqLitePorter.importSqlToDb(db, sql).then(() => {
           this.persistentService.updateIsDbReadyDataSource(true);
-          this.navCtrl.navigateRoot('/projects');
+          this.projectService.getUsers(db).then((users) => {
+            const email = this.onLoginForm.get('email').value;
+            const password = this.onLoginForm.get('password').value;
+            let loggedin = false;
+            if (users.rows.length > 0) {
+              for (let i = 0; i < users.rows.length; i++) {
+                if (users.rows.item(i).uemail === email && users.rows.item(i).upassword === password) {
+                  loggedin = true;
+                  const udata: Users = {
+                    id: users.rows.item(i).id,
+                    username: users.rows.item(i).username,
+                    email: users.rows.item(i).uemail,
+                    password: users.rows.item(i).upassword
+                  };
+                  this.persistentService.updateUserDetails(udata);
+                  this.navCtrl.navigateRoot('/projects');
+                }
+              }
+            }
+            if (!loggedin) {
+              alert('Invalid Username or Password !!');
+            }
+          }).catch((err) => {
+            console.log('No User Present !!');
+          });
         }).catch(error => alert('LoginPage: unable to create tables' + error));
       });
     }).catch(error => alert('LoginPage: unable to database' + error));

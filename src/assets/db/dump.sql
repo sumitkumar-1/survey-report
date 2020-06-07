@@ -39,3 +39,12 @@ CREATE TABLE IF NOT EXISTS pm_project_assets (
 	assettype TEXT NOT NULL,
 	assetpath TEXT NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS bc_users (
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	username TEXT NOT NULL,
+	uemail TEXT NOT NULL,
+	upassword TEXT NOT NULL
+);
+
+INSERT or IGNORE INTO bc_users(id, username, uemail, upassword) values(1, 'Ajay', 'ajaymishra.1985@gmail.com', 'ajay@123');

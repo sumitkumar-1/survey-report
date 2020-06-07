@@ -91,6 +91,7 @@ export class ProjectService {
       projectdata.installedserial,
       projectdata.installedasset
     ];
+    // tslint:disable-next-line: max-line-length
     return db.executeSql(`UPDATE pm_projects SET aspname = ?, completeddate = ?, shift = ?, currentstatus = ?, e911completed = ?, srscompleted = ?, usedlongcable = ?, dusasset = ?, dusserial = ?, dulasset = ?, dulserial = ?, xmuasset = ?, xmuserial = ?, installedserial = ?, installedasset = ?,  WHERE id = ${projectdata.projectid}`, data);
   }
 
@@ -135,8 +136,14 @@ export class ProjectService {
   public getProjectAssets(projectid: number, assettype: string, db: SQLiteObject) {
     return db.executeSql('SELECT * FROM pm_project_assets where projectid = ? and assettype = ?', [projectid, assettype]);
   }
+
   /* get all project details */
   public deleteProjectAsset(id: number, db: SQLiteObject) {
     return db.executeSql('DELETE FROM pm_project_assets where id = ?', [id]);
+  }
+
+  /* get all projects */
+  public getUsers(db: SQLiteObject) {
+    return db.executeSql('SELECT * FROM bc_users', []);
   }
 }
