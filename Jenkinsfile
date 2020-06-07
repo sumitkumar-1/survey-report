@@ -6,7 +6,7 @@ APP_NAME = "A-COP"
 KEY_FILE = "${APP_NAME}.keystore"
 PLATFORM = "android"
 BUILD_PARAM = "--prod --release"
-JDK_PATH = "C:/Program Files/Java/jdk1.8.0_251/bin/"
+JDK_PATH = "C:/Program^ Files/Java/jdk1.8.0_251/bin/"
 
 pipeline {
     agent any
