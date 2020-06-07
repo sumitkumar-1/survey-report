@@ -77,6 +77,11 @@ export class PhotoService {
   }
 
   public loadAssets(assettype: string) {
+    if (assettype === 'pre') {
+      this.prePhotos = [];
+    } else if (assettype === 'post') {
+      this.postPhotos = [];
+    }
     this.persistentService.dbDataSource.subscribe((db: SQLiteObject) => {
       if (db != null) {
         this.persistentService.currentProjectInfo.subscribe((projectdata: Project) => {
