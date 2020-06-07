@@ -42,17 +42,16 @@ export class AppComponent {
         icon: 'home'
       },
       {
+        title: 'Exports',
+        url: '/exports',
+        direct: 'root',
+        icon: 'document'
+      },
+      {
         title: 'About',
         url: '/about',
         direct: 'forward',
         icon: 'information-circle-outline'
-      },
-
-      {
-        title: 'App Settings',
-        url: '/settings',
-        direct: 'forward',
-        icon: 'cog'
       }
     ];
     this.initializeApp();

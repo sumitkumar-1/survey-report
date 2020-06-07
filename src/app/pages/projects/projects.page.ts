@@ -60,7 +60,7 @@ export class ProjectsPage {
           const items: Project[] = [];
           if (res.rows.length > 0) {
             for (let i = 0; i < res.rows.length; i++) {
-              this._projects.push({
+              items.push({
                 id: res.rows.item(i).id,
                 projectname: res.rows.item(i).projectname,
                 market: res.rows.item(i).market,
@@ -75,7 +75,7 @@ export class ProjectsPage {
                 targetlogopath: res.rows.item(i).targetlogopath
               });
             }
-            // this._projects = this._projects.concat(items);
+            this._projects = items;
           }
         }).catch((err) => {
           console.log('DbError: ' + err);

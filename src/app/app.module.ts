@@ -28,6 +28,7 @@ import { PersistentService } from './services/persistent.service';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { Base64 } from '@ionic-native/base64/ngx';
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 
 @NgModule({
   declarations: [AppComponent, NotificationsComponent],
@@ -54,6 +55,7 @@ import { Base64 } from '@ionic-native/base64/ngx';
     AndroidPermissions,
     File,
     Base64,
+    SocialSharing,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

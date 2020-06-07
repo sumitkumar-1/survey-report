@@ -1,6 +1,6 @@
 {
   "appId": "com.codenextzen.cop",
-  "appName": "COP Survey Report",
+  "appName": "A-COP",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",

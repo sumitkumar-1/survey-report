@@ -1,6 +1,6 @@
 {
   "appId": "com.codenextzen.cop",
-  "appName": "COP Survey Report",
+  "appName": "A-COP",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",
@@ -22,7 +22,6 @@
     }
   },
   "server": {
-    "url": "http://192.168.0.104:8100",
-    "cleartext": true
+    "url": "http://192.168.0.105:8100"
   }
 }

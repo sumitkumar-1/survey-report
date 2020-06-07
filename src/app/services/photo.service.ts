@@ -17,8 +17,6 @@ const { Camera, Filesystem, Storage } = Plugins;
 })
 export class PhotoService {
   public photos: Photo[] = [];
-  private PHOTO_STORAGE = 'photos';
-
   public prePhotos: Photo[] = [];
   public postPhotos: Photo[] = [];
 
@@ -58,9 +56,9 @@ export class PhotoService {
               alert('Success: Image - ' + res.insertId + ' added sucessfully !!');
               this.base64.encodeFile(projAsset.assetpath).then((based64File: string) => {
                 if (type === 'pre') {
-                  this.prePhotos.push({ id:res.insertId, filepath: projAsset.assetpath, webviewPath: '', base64: based64File });
+                  this.prePhotos.push({ id: res.insertId, filepath: projAsset.assetpath, webviewPath: '', base64: based64File });
                 } else if (type === 'post') {
-                  this.postPhotos.push({ id:res.insertId, filepath: projAsset.assetpath, webviewPath: '', base64: based64File });
+                  this.postPhotos.push({ id: res.insertId, filepath: projAsset.assetpath, webviewPath: '', base64: based64File });
                 }
               }).catch((err) => {
                 console.log('Invalid Asset Path in Database');
