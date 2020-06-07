@@ -43,6 +43,7 @@ export class ProjectsPage {
     private persistentService: PersistentService,
     private router: Router
   ) {
+    this._projects = [];
     this.images = [
       'assets/img/projects/thumb/image1.jpg',
       'assets/img/projects/thumb/image2.jpg',
@@ -59,7 +60,7 @@ export class ProjectsPage {
           const items: Project[] = [];
           if (res.rows.length > 0) {
             for (let i = 0; i < res.rows.length; i++) {
-              items.push({
+              this._projects.push({
                 id: res.rows.item(i).id,
                 projectname: res.rows.item(i).projectname,
                 market: res.rows.item(i).market,
@@ -74,7 +75,7 @@ export class ProjectsPage {
                 targetlogopath: res.rows.item(i).targetlogopath
               });
             }
-            this._projects = this._projects.concat(items);
+            // this._projects = this._projects.concat(items);
           }
         }).catch((err) => {
           console.log('DbError: ' + err);

@@ -96,8 +96,10 @@
       <ion-label position="floating">
         Complete Date
       </ion-label>
-      <ion-input *ngIf="!isProjDetExists" color="secondary" type="text" formControlName="completedate"></ion-input>
-      <ion-input *ngIf="isProjDetExists" color="secondary" type="text" formControlName="completedate" value={{projectdetaildata.completeddate}}></ion-input>
+      <!-- <ion-input *ngIf="!isProjDetExists" color="secondary" type="text" formControlName="completedate"></ion-input>
+      <ion-input *ngIf="isProjDetExists" color="secondary" type="text" formControlName="completedate" value={{projectdetaildata.completeddate}}></ion-input> -->
+      <ion-datetime *ngIf="!isProjDetExists" displayFormat="MMM DD, YYYY" color="secondary" type="text" formControlName="completedate"></ion-datetime>
+      <ion-datetime *ngIf="isProjDetExists" displayFormat="MMM DD, YYYY" color="secondary" type="text" formControlName="completedate" value={{projectdetaildata.completeddate}}></ion-datetime>
     </ion-item>
     <ion-item no-padding class="animated fadeInUp">
       <ion-label position="floating">

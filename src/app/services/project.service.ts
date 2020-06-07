@@ -76,9 +76,22 @@ export class ProjectService {
   public updateProjectDetails(projectdata: ProjectDetails, db: SQLiteObject) {
     const data = [
       projectdata.aspname,
-      projectdata.currentstatus
+      projectdata.completeddate,
+      projectdata.shift,
+      projectdata.currentstatus,
+      projectdata.e911completed,
+      projectdata.srscompleted,
+      projectdata.usedlongcable,
+      projectdata.dusasset,
+      projectdata.dusserial,
+      projectdata.dulasset,
+      projectdata.dulserial,
+      projectdata.xmuasset,
+      projectdata.xmuserial,
+      projectdata.installedserial,
+      projectdata.installedasset
     ];
-    return db.executeSql(`UPDATE pm_projects SET aspname = ?, currentstatus = ? WHERE id = ${projectdata.id}`, data);
+    return db.executeSql(`UPDATE pm_projects SET aspname = ?, completeddate = ?, shift = ?, currentstatus = ?, e911completed = ?, srscompleted = ?, usedlongcable = ?, dusasset = ?, dusserial = ?, dulasset = ?, dulserial = ?, xmuasset = ?, xmuserial = ?, installedserial = ?, installedasset = ?,  WHERE id = ${projectdata.projectid}`, data);
   }
 
   /* delte project */

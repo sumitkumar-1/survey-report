@@ -91,6 +91,7 @@ export class ProjectOverviewPage implements OnInit {
               if (projectDetail !== null && projectDetail.rows.length > 0) {
                 this.isProjDetExists = true;
                 this.projectdetaildata = projectDetail.rows.item(0);
+                this.onProjectDetailAdd.setValue(this.projectdetaildata);
               }
             });
           }
@@ -146,14 +147,22 @@ export class ProjectOverviewPage implements OnInit {
         installedasset: this.onProjectDetailAdd.controls.installedAsset.value,
       };
       try {
-        this.projectService.addProjectDetails(projDetail, this.dbInfo).then((projectDetail) => {
-          console.log(projectDetail);
-          alert('added successfully');
-        }, (error) => { console.log(error) });
+        if (this.isProjDetExists) {
+          this.projectService.updateProjectDetails(projDetail, this.dbInfo).then((projectDetail) => {
+            console.log(projectDetail);
+            alert('updated successfully');
+          }, (error) => { console.log(error) });
+        } else {
+          this.projectService.addProjectDetails(projDetail, this.dbInfo).then((projectDetail) => {
+            console.log(projectDetail);
+            alert('added successfully');
+          }, (error) => { console.log(error) });
+        }
         this.projectService.getProjectDetails(this.projectinfodata.id, this.dbInfo).then((projectDetail: any) => {
           if (projectDetail !== null && projectDetail.rows.length > 0) {
             this.isProjDetExists = true;
             this.projectdetaildata = projectDetail.rows.item(0);
+            this.onProjectDetailAdd.setValue(this.projectdetaildata);
           }
         });
         this.edit = false;

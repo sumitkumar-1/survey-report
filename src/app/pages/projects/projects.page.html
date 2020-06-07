@@ -9,61 +9,13 @@
       </ion-text>
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button size="small" shape="round" color="medium" (click)="notifications()">
+      <ion-button size="small" shape="round" color="medium">
         <ion-icon name="notifications"></ion-icon>
         <ion-badge color="dark" slot="end">2</ion-badge>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-  <!-- <ion-toolbar color="dark">
-    <ion-searchbar [(ngModel)]="searchKey"></ion-searchbar>
-    <ion-buttons slot="end">
-      <ion-button size="small" shape="round" color="medium" (click)="searchFilter()">
-        <ion-icon name="options"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar> -->
 </ion-header>
-
-<!-- <ion-content>
-  <ion-card no-margin class="no-radius">
-    <ion-item lines="none" color="medium">
-      <ion-label>
-        <h2 no-margin class="fw500 no-margin">
-          <ion-text color="dark">Alert / Toast test</ion-text>
-        </h2>
-
-        <p class="text-11x no-margin">
-          <ion-text  color="primary">{{yourLocation}}</ion-text>
-        </p>
-      </ion-label>
-      <ion-button shape="round" fill="outline" size="small" color="primary" (click)="alertLocation()">
-        Location
-        <ion-icon name="locate"></ion-icon>
-      </ion-button>
-    </ion-item>
-  </ion-card>
-
-  <ion-card class="bg-white">
-    <ion-img [src]="themeCover"></ion-img>
-    <ion-button expand="full" color="dark" (click)="presentImage(themeCover)" no-margin>
-      Modal 1: Modal Image
-    </ion-button>
-  </ion-card>
-
-  <ion-button margin shape="round" expand="full" color="secondary" (click)="searchFilter()">
-    Modal 2: Search Filter
-  </ion-button>
-  
-  <popmenu></popmenu>
-  <ion-fab vertical="bottom" horizontal="center" slot="fixed">
-    <ion-fab-button (click)="mediaService.addNewAsset(1,'PRE')">
-      <ion-icon name="camera"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
-</ion-content>
-  
-</ion-content> -->
 <!-- project -->
 <ion-content padding class="projs detail-bg">
   <!--list of projects-->
@@ -71,11 +23,6 @@
     margin-bottom>
     <div class="background border-bottom" [ngStyle]="{'background-image': 'url(' + images[i] + ')'}">
       <div class="background-filter rlt">
-        <!-- <div class="align-top-left">
-          <ion-fab-button size="small" (click)="projectInfo()">
-            <ion-icon name="information-circle"></ion-icon>
-          </ion-fab-button>
-        </div> -->
         <div class="align-bottom" padding-left padding-right>
           <h6 class="pull-left text-white margin-left-3" ion-text>{{ project.projectname }}</h6>
           <h6 class="pull-right text-white margin-right-3" ion-text>{{ project.sitename }}</h6>
@@ -89,11 +36,6 @@
       <span class="pull-right" ion-text color="light"><strong>{{ project.market }}</strong></span>
     </div>
   </div>
-  <!-- <ion-fab vertical="bottom" horizontal="center" slot="fixed" class="icon-add">
-    <button ion-fab color="primary">
-      <ion-icon name="add-circle" style="font-size: 4rem;"></ion-icon>
-    </button>
-  </ion-fab> -->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed" style="margin-right: 2%;">
     <ion-fab-button (click)="createProject()">
       <ion-icon name="add-circle" style="font-size: 2rem;"></ion-icon>
