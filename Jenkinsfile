@@ -12,34 +12,34 @@ pipeline {
     stages {
         stage('NPM Setup') {
             steps {
-                sh "npm install"
+                bat "npm install"
             }
         }
         stage('Add Platform') {
             steps {
-                sh "rmdir /S /Q ${PLATFORM}"
-                sh "ionic cap add ${PLATFORM}"
+                bat "rmdir /S /Q ${PLATFORM}"
+                bat "ionic cap add ${PLATFORM}"
             }
         }
         stage("Platform Build") {
             steps {
-                sh "ionic cap build ${PLATFORM} ${BUILD_PARAM}"
+                bat "ionic cap build ${PLATFORM} ${BUILD_PARAM}"
             }
         }
         stage('APK KeyGen') {
             steps {
-                sh "keytool -genkey -v -keystore ${KEY_FILE} -alias ${APP_NAME} -keyalg RSA -keysize 2048 -validity 10000"
+                bat "keytool -genkey -v -keystore ${KEY_FILE} -alias ${APP_NAME} -keyalg RSA -keysize 2048 -validity 10000"
             }
         }
         stage('APK Sign') {
             steps {
-                sh "jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ${KEY_FILE} ${APP_NAME}-release-unsigned.apk ${APP_NAME}"
+                bat "jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ${KEY_FILE} ${APP_NAME}-release-unsigned.apk ${APP_NAME}"
             }
         }
         stage('APK Align') {
             steps {
-                sh 'set PATH=C:/Users/sumit/AppData/Local/Android/Sdk/build-tools/28.0.3'
-                sh "zipalign -v 4 ${APP_NAME}-release-unsigned.apk ${APP_NAME}.apk"
+                bat 'set PATH=C:/Users/sumit/AppData/Local/Android/Sdk/build-tools/28.0.3'
+                bat "zipalign -v 4 ${APP_NAME}-release-unsigned.apk ${APP_NAME}.apk"
             }
         }
     }
