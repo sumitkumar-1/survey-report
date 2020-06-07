@@ -1,9 +1,9 @@
 {
-  "name": "ionic4-start-theme",
-  "description": "Survey Report Theme",
+  "name": "a-cop",
+  "description": "Survey Report COP",
   "version": "1.0.0",
-  "author": "Ionic Theme",
-  "homepage": "https://ionictheme.com",
+  "author": "codenextzen",
+  "homepage": "https://codenextzen.com",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
