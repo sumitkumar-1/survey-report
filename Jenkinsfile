@@ -18,6 +18,7 @@ pipeline {
         stage('Add Platform') {
             steps {
                 bat "rmdir /S /Q ${PLATFORM}"
+                bat "set PATH=C:/Users/sumit/AppData/Roaming/npm"
                 bat "ionic cap add ${PLATFORM}"
             }
         }
