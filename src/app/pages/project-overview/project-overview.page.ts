@@ -91,7 +91,6 @@ export class ProjectOverviewPage implements OnInit {
               if (projectDetail !== null && projectDetail.rows.length > 0) {
                 this.isProjDetExists = true;
                 this.projectdetaildata = projectDetail.rows.item(0);
-                this.onProjectDetailAdd.setValue(this.projectdetaildata);
               }
             });
           }
@@ -162,7 +161,6 @@ export class ProjectOverviewPage implements OnInit {
           if (projectDetail !== null && projectDetail.rows.length > 0) {
             this.isProjDetExists = true;
             this.projectdetaildata = projectDetail.rows.item(0);
-            this.onProjectDetailAdd.setValue(this.projectdetaildata);
           }
         });
         this.edit = false;
@@ -193,6 +191,23 @@ export class ProjectOverviewPage implements OnInit {
   }
 
   editProjectDetails() {
+    this.onProjectDetailAdd.setValue({
+      aspname: this.projectdetaildata.aspname,
+      completedate: this.projectdetaildata.completeddate,
+      shift: this.projectdetaildata.shift,
+      currentStatus: this.projectdetaildata.currentstatus,
+      e911completed: this.projectdetaildata.e911completed,
+      srsCompleted: this.projectdetaildata.srscompleted,
+      usedLongCable: this.projectdetaildata.usedlongcable,
+      dusAssets: this.projectdetaildata.dusasset,
+      dusSerial: this.projectdetaildata.dusserial,
+      dulAssets: this.projectdetaildata.dulasset,
+      dulSerial: this.projectdetaildata.dulserial,
+      xmuAsset: this.projectdetaildata.xmuasset,
+      xmuSerial: this.projectdetaildata.xmuserial,
+      installedSerial: this.projectdetaildata.installedserial,
+      installedAsset: this.projectdetaildata.installedasset
+    });
     this.edit = true;
   }
   // Export Functions goes below

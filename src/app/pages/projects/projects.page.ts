@@ -29,6 +29,7 @@ export class ProjectsPage {
   searchKey = '';
   yourLocation = '123 Test Street';
   themeCover = 'assets/img/ionic4-Start-Theme-cover.jpg';
+  isProjectsExists = false;
   public _projects: Project[];
   public selectedImage: string;
   public images: string[];
@@ -76,6 +77,9 @@ export class ProjectsPage {
               });
             }
             this._projects = items;
+            if(this._projects.length > 0) {
+              this.isProjectsExists = true;
+            }
           }
         }).catch((err) => {
           console.log('DbError: ' + err);

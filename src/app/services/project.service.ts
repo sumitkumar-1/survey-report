@@ -92,7 +92,7 @@ export class ProjectService {
       projectdata.installedasset
     ];
     // tslint:disable-next-line: max-line-length
-    return db.executeSql(`UPDATE pm_projects SET aspname = ?, completeddate = ?, shift = ?, currentstatus = ?, e911completed = ?, srscompleted = ?, usedlongcable = ?, dusasset = ?, dusserial = ?, dulasset = ?, dulserial = ?, xmuasset = ?, xmuserial = ?, installedserial = ?, installedasset = ?,  WHERE id = ${projectdata.projectid}`, data);
+    return db.executeSql(`UPDATE pm_project_details SET aspname = ?, completeddate = ?, shift = ?, currentstatus = ?, e911completed = ?, srscompleted = ?, usedlongcable = ?, dusasset = ?, dusserial = ?, dulasset = ?, dulserial = ?, xmuasset = ?, xmuserial = ?, installedserial = ?, installedasset = ? WHERE id = ${projectdata.projectid}`, data);
   }
 
   /* delte project */

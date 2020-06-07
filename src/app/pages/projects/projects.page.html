@@ -8,33 +8,38 @@
         <ion-text color="light" class="fw700">Projects</ion-text>
       </ion-text>
     </ion-title>
-    <ion-buttons slot="end">
+    <!-- <ion-buttons slot="end">
       <ion-button size="small" shape="round" color="medium">
         <ion-icon name="notifications"></ion-icon>
         <ion-badge color="dark" slot="end">2</ion-badge>
       </ion-button>
-    </ion-buttons>
+    </ion-buttons> -->
   </ion-toolbar>
 </ion-header>
 <!-- project -->
 <ion-content padding class="projs detail-bg">
   <!--list of projects-->
-  <div class="proj card" *ngFor="let project of _projects; let i = index" tappable (click)="viewProject(project)"
-    margin-bottom>
-    <div class="background border-bottom" [ngStyle]="{'background-image': 'url(' + images[i] + ')'}">
-      <div class="background-filter rlt">
-        <div class="align-bottom" padding-left padding-right>
-          <h6 class="pull-left text-white margin-left-3" ion-text>{{ project.projectname }}</h6>
-          <h6 class="pull-right text-white margin-right-3" ion-text>{{ project.sitename }}</h6>
-          <div class="clear"></div>
+  <div *ngIf="isProjectsExists">
+    <div class="proj card" *ngFor="let project of _projects; let i = index" tappable (click)="viewProject(project)"
+      margin-bottom>
+      <div class="background border-bottom" [ngStyle]="{'background-image': 'url(' + images[i] + ')'}">
+        <div class="background-filter rlt">
+          <div class="align-bottom" padding-left padding-right>
+            <h6 class="pull-left text-white margin-left-3" ion-text>{{ project.projectname }}</h6>
+            <h6 class="pull-right text-white margin-right-3" ion-text>{{ project.sitename }}</h6>
+            <div class="clear"></div>
+          </div>
         </div>
       </div>
+      <div class="padding-sm primary-bg">
+        <ion-icon name="time" class="text-white"></ion-icon>
+        <span ion-text class="text-white text-font-12">{{ project.startdate }}</span>
+        <span class="pull-right" ion-text color="light"><strong>{{ project.market }}</strong></span>
+      </div>
     </div>
-    <div class="padding-sm primary-bg">
-      <ion-icon name="time" class="text-white"></ion-icon>
-      <span ion-text class="text-white text-font-12">{{ project.startdate }}</span>
-      <span class="pull-right" ion-text color="light"><strong>{{ project.market }}</strong></span>
-    </div>
+  </div>
+  <div *ngIf="!isProjectsExists" style="text-align: center; margin-top: 60%;">
+    <h3>No Project Exists!!!</h3>
   </div>
   <ion-fab vertical="bottom" horizontal="end" slot="fixed" style="margin-right: 2%;">
     <ion-fab-button (click)="createProject()">

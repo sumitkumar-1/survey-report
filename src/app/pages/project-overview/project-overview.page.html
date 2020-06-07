@@ -89,108 +89,92 @@
       <ion-label position="floating">
         ASP Name
       </ion-label>
-      <ion-input  *ngIf="!isProjDetExists" color="secondary" type="text" formControlName="aspname"></ion-input>
-      <ion-input  *ngIf="isProjDetExists" color="secondary" type="text" formControlName="aspname" value={{projectdetaildata.aspname}}></ion-input>
+      <ion-input color="secondary" type="text" formControlName="aspname"></ion-input>
     </ion-item>
     <ion-item no-padding class="animated fadeInUp">
       <ion-label position="floating">
         Complete Date
       </ion-label>
-      <!-- <ion-input *ngIf="!isProjDetExists" color="secondary" type="text" formControlName="completedate"></ion-input>
-      <ion-input *ngIf="isProjDetExists" color="secondary" type="text" formControlName="completedate" value={{projectdetaildata.completeddate}}></ion-input> -->
-      <ion-datetime *ngIf="!isProjDetExists" displayFormat="MMM DD, YYYY" color="secondary" type="text" formControlName="completedate"></ion-datetime>
-      <ion-datetime *ngIf="isProjDetExists" displayFormat="MMM DD, YYYY" color="secondary" type="text" formControlName="completedate" value={{projectdetaildata.completeddate}}></ion-datetime>
+      <ion-datetime displayFormat="MMM DD, YYYY" color="secondary" type="text" formControlName="completedate">
+      </ion-datetime>
     </ion-item>
     <ion-item no-padding class="animated fadeInUp">
       <ion-label position="floating">
         Shift
       </ion-label>
-      <ion-input *ngIf="!isProjDetExists" color="secondary" type="text" formControlName="shift"></ion-input>
-      <ion-input *ngIf="isProjDetExists" color="secondary" type="text" formControlName="shift" value={{projectdetaildata.shift}}></ion-input>
+      <ion-input color="secondary" type="text" formControlName="shift"></ion-input>
     </ion-item>
     <ion-item no-padding class="animated fadeInUp">
       <ion-label position="floating">
         Current Status
       </ion-label>
-      <ion-input *ngIf="!isProjDetExists" color="secondary" type="text" formControlName="currentStatus"></ion-input>
-      <ion-input *ngIf="isProjDetExists" color="secondary" type="text" formControlName="currentStatus" value={{projectdetaildata.currentstatus}}></ion-input>
+      <ion-input color="secondary" type="text" formControlName="currentStatus"></ion-input>
     </ion-item>
     <ion-item no-padding class="animated fadeInUp">
       <ion-label position="floating">
         E911 Completed
       </ion-label>
-      <ion-input *ngIf="!isProjDetExists" color="secondary" type="text" formControlName="e911completed"></ion-input>
-      <ion-input *ngIf="isProjDetExists" color="secondary" type="text" formControlName="e911completed" value={{projectdetaildata.e911completed}}></ion-input>
+      <ion-input color="secondary" type="text" formControlName="e911completed"></ion-input>
     </ion-item>
     <ion-item no-padding class="animated fadeInUp">
       <ion-label position="floating">
         SRS Completed
       </ion-label>
-      <ion-input *ngIf="!isProjDetExists" color="secondary" type="text" formControlName="srsCompleted"></ion-input>
-      <ion-input *ngIf="isProjDetExists" color="secondary" type="text" formControlName="srsCompleted" value={{projectdetaildata.srscompleted}}></ion-input>
+      <ion-input color="secondary" type="text" formControlName="srsCompleted"></ion-input>
     </ion-item>
     <ion-item no-padding class="animated fadeInUp">
       <ion-label position="floating">
         Used Long Cable
       </ion-label>
-      <ion-input *ngIf="!isProjDetExists" color="secondary" type="text" formControlName="usedLongCable"></ion-input>
-      <ion-input *ngIf="isProjDetExists" color="secondary" type="text" formControlName="usedLongCable" value={{projectdetaildata.usedlongcable}}></ion-input>
+      <ion-input color="secondary" type="text" formControlName="usedLongCable"></ion-input>
     </ion-item>
     <ion-item no-padding class="animated fadeInUp">
       <ion-label position="floating">
         DUS Assets
       </ion-label>
-      <ion-input *ngIf="!isProjDetExists" color="secondary" type="text" formControlName="dusAssets"></ion-input>
-      <ion-input *ngIf="isProjDetExists" color="secondary" type="text" formControlName="dusAssets" value={{projectdetaildata.dusasset}}></ion-input>
+      <ion-input color="secondary" type="text" formControlName="dusAssets"></ion-input>
     </ion-item>
     <ion-item no-padding class="animated fadeInUp">
       <ion-label position="floating">
         DUS Serial
       </ion-label>
-      <ion-input *ngIf="!isProjDetExists" color="secondary" type="text" formControlName="dusSerial"></ion-input>
-      <ion-input *ngIf="isProjDetExists" color="secondary" type="text" formControlName="dusSerial" value={{projectdetaildata.dusserial}}></ion-input>
+      <ion-input color="secondary" type="text" formControlName="dusSerial"></ion-input>
     </ion-item>
     <ion-item no-padding class="animated fadeInUp">
       <ion-label position="floating">
         DUL Assets
       </ion-label>
-      <ion-input *ngIf="!isProjDetExists" color="secondary" type="text" formControlName="dulAssets"></ion-input>
-      <ion-input *ngIf="isProjDetExists" color="secondary" type="text" formControlName="dulAssets" value={{projectdetaildata.dulasset}}></ion-input>
+      <ion-input color="secondary" type="text" formControlName="dulAssets"></ion-input>
     </ion-item>
     <ion-item no-padding class="animated fadeInUp">
       <ion-label position="floating">
         DUL Serial
       </ion-label>
-      <ion-input *ngIf="!isProjDetExists" color="secondary" type="text" formControlName="dulSerial"></ion-input>
-      <ion-input *ngIf="isProjDetExists" color="secondary" type="text" formControlName="dulSerial" value={{projectdetaildata.dulserial}}></ion-input>
+      <ion-input color="secondary" type="text" formControlName="dulSerial"></ion-input>
     </ion-item>
     <ion-item no-padding class="animated fadeInUp">
       <ion-label position="floating">
         XMU Asset
       </ion-label>
-      <ion-input *ngIf="!isProjDetExists" color="secondary" type="text" formControlName="xmuAsset"></ion-input>
-      <ion-input *ngIf="isProjDetExists" color="secondary" type="text" formControlName="xmuAsset" value={{projectdetaildata.xmuasset}}></ion-input>
+      <ion-input color="secondary" type="text" formControlName="xmuAsset"></ion-input>
     </ion-item>
     <ion-item no-padding class="animated fadeInUp">
       <ion-label position="floating">
         XMU Serial
       </ion-label>
-      <ion-input *ngIf="!isProjDetExists" color="secondary" type="text" formControlName="xmuSerial"></ion-input>
-      <ion-input *ngIf="isProjDetExists" color="secondary" type="text" formControlName="xmuSerial" value={{projectdetaildata.xmuserial}}></ion-input>
+      <ion-input color="secondary" type="text" formControlName="xmuSerial"></ion-input>
     </ion-item>
     <ion-item no-padding class="animated fadeInUp">
       <ion-label position="floating">
         Installed Serial
       </ion-label>
-      <ion-input *ngIf="!isProjDetExists" color="secondary" type="text" formControlName="installedSerial"></ion-input>
-      <ion-input *ngIf="isProjDetExists" color="secondary" type="text" formControlName="installedSerial" value={{projectdetaildata.installedserial}}></ion-input>
+      <ion-input color="secondary" type="text" formControlName="installedSerial"></ion-input>
     </ion-item>
     <ion-item no-padding class="animated fadeInUp">
       <ion-label position="floating">
         Installed Asset
       </ion-label>
-      <ion-input *ngIf="!isProjDetExists" color="secondary" type="text" formControlName="installedAsset"></ion-input>
-      <ion-input *ngIf="isProjDetExists" color="secondary" type="text" formControlName="installedAsset" value={{projectdetaildata.installedasset}}></ion-input>
+      <ion-input color="secondary" type="text" formControlName="installedAsset"></ion-input>
     </ion-item>
   </form>
   <div class="mar-top5" *ngIf="edit">
