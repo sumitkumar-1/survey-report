@@ -9,6 +9,9 @@ BUILD_PARAM = "--prod --release"
 
 pipeline {
     agent any
+    environment {
+         PATH='C:/Users/sumit/AppData/Roaming/npm:C:/Users/sumit/AppData/Local/Android/Sdk/build-tools/28.0.3:C:\Program Files\nodejs'
+      }
     stages {
         stage('NPM Setup') {
             steps {
