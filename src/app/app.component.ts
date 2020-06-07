@@ -17,7 +17,7 @@ import { Users } from './interfaces/Users';
 export class AppComponent {
 
   public appPages: Array<Pages>;
-  public userDetail: Users;
+  public userDetail: Users = { id: 0, username: '', email: '', password: '', };
 
   constructor(
     private platform: Platform,
@@ -63,9 +63,13 @@ export class AppComponent {
   }
 
   loadUserData() {
-    this.persistentService.userDetails.subscribe((data: Users) => {
-      this.userDetail = data;
-    });
+    if (this.persistentService != null) {
+      this.persistentService.userDetails.subscribe((data: Users) => {
+        if (data != null) {
+          this.userDetail = data;
+        }
+      });
+    }
   }
 
   initializeApp() {

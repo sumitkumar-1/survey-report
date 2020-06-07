@@ -312,7 +312,12 @@ export class ProjectOverviewPage implements OnInit {
 
     for (let i = 0; i < projectdetailheader.length; i++) {
       this.createCell(summary_ws, String.fromCharCode(65 + i) + '24', projectdetailheader[i], styleFontBlack, cellBorder, cellFillSkyBlue);
-      this.createCell(summary_ws, String.fromCharCode(65 + i) + '25', projectdatadetails[i].toString(), styleFontBlack, cellBorder, '');
+      if (projectdatadetails[i] != null) {
+        this.createCell(summary_ws, String.fromCharCode(65 + i) + '25', projectdatadetails[i].toString(), styleFontBlack, cellBorder, '');
+      } else {
+        this.createCell(summary_ws, String.fromCharCode(65 + i) + '25', '', styleFontBlack, cellBorder, '');
+      }
+
     }
 
     summary_ws.getRow(24).alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };

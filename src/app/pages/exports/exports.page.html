@@ -22,7 +22,7 @@
             </ion-list-header>
 
             <ion-item *ngFor="let item of exportFiles">
-              <ion-label color="dark" style="zoom:1.4;">{{item.name}}</ion-label>
+              <ion-label color="dark">{{item.name}}</ion-label>
               <ion-buttons slot="end" style="zoom:1.6;" (click)="shareFile(item.path)">
                 <ion-icon name="share"></ion-icon>
               </ion-buttons>
