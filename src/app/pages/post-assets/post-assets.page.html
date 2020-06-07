@@ -4,26 +4,15 @@
       <ion-back-button defaultHref="projects"></ion-back-button>
     </ion-buttons>
     <ion-buttons size="large" shape="round" color="medium" slot="end">
-      <!-- (click)="toggeleView()" -->
-      <!-- <ion-icon name="grid" *ngIf="!data.grid" style="font-size: 25px; margin: 5px;"></ion-icon> -->
-      <!-- <ion-icon name="list" *ngIf="data.grid" style="font-size: 25px; margin: 5px;"></ion-icon> -->
     </ion-buttons>
     <ion-title>Post Assets</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <!-- <ion-list [ngClass]="{'grid-container' : data.grid , 'list' : !data.grid}">
-    <div *ngFor="let photo of photoService.photos; index as position"
-      [ngClass]="{'col col-25' : data.grid , '' : !data.grid}" class="item-remove-animate">
-      <ion-thumbnail>
-        <ion-img src="{{ photo.base64 ? photo.base64 : photo.webviewPath }}">
-        </ion-img>
-      </ion-thumbnail>
-    </div>
-  </ion-list> -->
   <ion-list class="grid-container">
-    <div *ngFor="let photo of photoService.postPhotos; index as position" class="col col-25 item-remove-animate">
+    <div *ngFor="let photo of photoService.postPhotos; index as position" class="col col-25 item-remove-animate"
+    (click)="presentImage(photo)">
       <ion-thumbnail>
         <ion-img src="{{ photo.base64 ? photo.base64 : photo.webviewPath }}">
         </ion-img>

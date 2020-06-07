@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { PhotoService } from 'src/app/services/photo.service';
+import { Photo } from 'src/app/interfaces/photo.modal';
+import { ModalController } from '@ionic/angular';
+import { ImagePage } from '../modal/image/image.page';
 
 @Component({
   selector: 'app-post-assets',
@@ -7,17 +10,20 @@ import { PhotoService } from 'src/app/services/photo.service';
   styleUrls: ['./post-assets.page.scss'],
 })
 export class PostAssetsPage implements OnInit {
-  // data = {
-  //   grid: false
-  // };
-  constructor(public photoService: PhotoService) {
-  }
+  private assetType = 'post';
+  constructor(public photoService: PhotoService,
+    public modalCtrl: ModalController) { }
 
   ngOnInit() {
-    this.photoService.loadAssets('post');
+    this.photoService.postPhotos = [];
+    this.photoService.loadAssets(this.assetType);
   }
 
-  // toggeleView() {
-  //   this.data.grid = !this.data.grid;
-  // }
+  async presentImage(image: Photo) {
+    const modal = await this.modalCtrl.create({
+      component: ImagePage,
+      componentProps: { photo: image, assetType: this.assetType }
+    });
+    return await modal.present();
+  }
 }

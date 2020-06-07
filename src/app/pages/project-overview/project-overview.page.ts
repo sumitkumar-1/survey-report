@@ -30,6 +30,7 @@ export class ProjectOverviewPage implements OnInit {
   private dbInfo: SQLiteObject;
   private preAssets: string[] = [];
   private postAssets: string[] = [];
+  private isProjDetExists = false;
 
   private edit = false;
   constructor(public popoverCtrl: PopoverController,
@@ -87,7 +88,8 @@ export class ProjectOverviewPage implements OnInit {
           if (db != null) {
             this.dbInfo = db;
             this.projectService.getProjectDetails(this.projectinfodata.id, db).then((projectDetail: any) => {
-              if (projectDetail !== null) {
+              if (projectDetail !== null && projectDetail.rows.length > 0) {
+                this.isProjDetExists = true;
                 this.projectdetaildata = projectDetail.rows.item(0);
               }
             });
@@ -149,7 +151,8 @@ export class ProjectOverviewPage implements OnInit {
           alert('added successfully');
         }, (error) => { console.log(error) });
         this.projectService.getProjectDetails(this.projectinfodata.id, this.dbInfo).then((projectDetail: any) => {
-          if (projectDetail !== null) {
+          if (projectDetail !== null && projectDetail.rows.length > 0) {
+            this.isProjDetExists = true;
             this.projectdetaildata = projectDetail.rows.item(0);
           }
         });

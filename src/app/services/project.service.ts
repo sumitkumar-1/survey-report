@@ -122,4 +122,8 @@ export class ProjectService {
   public getProjectAssets(projectid: number, assettype: string, db: SQLiteObject) {
     return db.executeSql('SELECT * FROM pm_project_assets where projectid = ? and assettype = ?', [projectid, assettype]);
   }
+  /* get all project details */
+  public deleteProjectAsset(id: number, db: SQLiteObject) {
+    return db.executeSql('DELETE FROM pm_project_assets where id = ?', [id]);
+  }
 }

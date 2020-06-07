@@ -58,9 +58,9 @@ export class PhotoService {
               alert('Success: Image - ' + res.insertId + ' added sucessfully !!');
               this.base64.encodeFile(projAsset.assetpath).then((based64File: string) => {
                 if (type === 'pre') {
-                  this.prePhotos.push({ filepath: '', webviewPath: '', base64: based64File });
+                  this.prePhotos.push({ id:res.insertId, filepath: projAsset.assetpath, webviewPath: '', base64: based64File });
                 } else if (type === 'post') {
-                  this.postPhotos.push({ filepath: '', webviewPath: '', base64: based64File });
+                  this.postPhotos.push({ id:res.insertId, filepath: projAsset.assetpath, webviewPath: '', base64: based64File });
                 }
               }).catch((err) => {
                 console.log('Invalid Asset Path in Database');
@@ -90,9 +90,9 @@ export class PhotoService {
               for (let i = 0; i < res.rows.length; i++) {
                 this.base64.encodeFile(res.rows.item(i).assetpath).then((based64File: string) => {
                   if (assettype === 'pre') {
-                    this.prePhotos.push({ filepath: '', webviewPath: '', base64: based64File });
+                    this.prePhotos.push({ id: res.rows.item(i).id, filepath: res.rows.item(i).assetpath, webviewPath: '', base64: based64File });
                   } else if (assettype === 'post') {
-                    this.postPhotos.push({ filepath: '', webviewPath: '', base64: based64File });
+                    this.postPhotos.push({ id: res.rows.item(i).id, filepath: res.rows.item(i).assetpath, webviewPath: '', base64: based64File });
                   }
                 }).catch((err) => {
                   console.log('Invalid Asset Path in Database');

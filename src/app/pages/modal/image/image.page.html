@@ -5,9 +5,15 @@
         <ion-icon slot="start" name="close"></ion-icon> Close
       </ion-button>
     </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button size="small" shape="round" (click)="delete()" color="tertiary">
+        <ion-icon name="trash"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <img [src]="value">
+  <ion-img src="{{ photo.base64 ? photo.base64 : photo.webviewPath }}">
+  </ion-img>
 </ion-content>

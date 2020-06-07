@@ -64,18 +64,18 @@
 </ion-content>
   
 </ion-content> -->
-<!-- trip -->
+<!-- project -->
 <ion-content padding class="projs detail-bg">
-  <!--list of trips-->
+  <!--list of projects-->
   <div class="proj card" *ngFor="let project of _projects; let i = index" tappable (click)="viewProject(project)"
     margin-bottom>
     <div class="background border-bottom" [ngStyle]="{'background-image': 'url(' + images[i] + ')'}">
       <div class="background-filter rlt">
-        <div class="align-top-left">
+        <!-- <div class="align-top-left">
           <ion-fab-button size="small" (click)="projectInfo()">
             <ion-icon name="information-circle"></ion-icon>
           </ion-fab-button>
-        </div>
+        </div> -->
         <div class="align-bottom" padding-left padding-right>
           <h6 class="pull-left text-white margin-left-3" ion-text>{{ project.projectname }}</h6>
           <h6 class="pull-right text-white margin-right-3" ion-text>{{ project.sitename }}</h6>

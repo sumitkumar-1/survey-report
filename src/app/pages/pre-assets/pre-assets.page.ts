@@ -10,17 +10,19 @@ import { ImagePage } from '../modal/image/image.page';
   styleUrls: ['./pre-assets.page.scss'],
 })
 export class PreAssetsPage implements OnInit {
+  private assetType = 'pre';
   constructor(public photoService: PhotoService,
     public modalCtrl: ModalController) { }
 
   ngOnInit() {
-    this.photoService.loadAssets('pre');
+    this.photoService.prePhotos = [];
+    this.photoService.loadAssets(this.assetType);
   }
 
   async presentImage(image: Photo) {
     const modal = await this.modalCtrl.create({
       component: ImagePage,
-      componentProps: { value: image.webviewPath }
+      componentProps: { photo: image, assetType: this.assetType }
     });
     return await modal.present();
   }
