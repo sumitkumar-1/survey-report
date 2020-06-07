@@ -21,7 +21,7 @@ pipeline {
                 sh "ionic cap add ${PLATFORM}"
             }
         }
-        stage("${PLATFORM} Build") {
+        stage("Platform Build") {
             steps {
                 sh "ionic cap build ${PLATFORM} ${BUILD_PARAM}"
             }
