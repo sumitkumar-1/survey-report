@@ -18,7 +18,10 @@ pipeline {
         stage('Add Platform') {
             steps {
                 bat "rmdir /S /Q ${PLATFORM}"
+                bat "C:/Users/sumit/AppData/Roaming/npm/ionic build"
                 bat "C:/Users/sumit/AppData/Roaming/npm/ionic cap add ${PLATFORM}"
+                bat "C:/Users/sumit/AppData/Roaming/npm/ionic cap copy"
+                bat "C:/Users/sumit/AppData/Roaming/npm/ionic cap sync"
             }
         }
         stage("Platform Build") {
