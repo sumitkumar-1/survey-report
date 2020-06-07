@@ -6,6 +6,7 @@ APP_NAME = "A-COP"
 KEY_FILE = "${APP_NAME}.keystore"
 PLATFORM = "android"
 BUILD_PARAM = "--prod --release"
+JDK_PATH = dir("C:/Program Files/Java/jdk1.8.0_251/bin/")
 
 pipeline {
     agent any
@@ -31,12 +32,12 @@ pipeline {
         }
         stage('APK KeyGen') {
             steps {
-                bat "C:/Program Files/Java/jdk1.8.0_251/bin/keytool -genkey -v -keystore ${KEY_FILE} -alias ${APP_NAME} -keyalg RSA -keysize 2048 -validity 10000"
+                bat "${JDK_PATH}keytool -genkey -v -keystore ${KEY_FILE} -alias ${APP_NAME} -keyalg RSA -keysize 2048 -validity 10000"
             }
         }
         stage('APK Sign') {
             steps {
-                bat "C:/Program Files/Java/jdk1.8.0_251/bin/jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ${KEY_FILE} ${APP_NAME}-release-unsigned.apk ${APP_NAME}"
+                bat "${JDK_PATH}jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ${KEY_FILE} ${APP_NAME}-release-unsigned.apk ${APP_NAME}"
             }
         }
         stage('APK Align') {
