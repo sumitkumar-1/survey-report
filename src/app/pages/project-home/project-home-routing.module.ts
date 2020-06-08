@@ -9,15 +9,15 @@ const routes: Routes = [
     children: [
       {
         path: 'project-overview',
-        loadChildren: () => import('../project-overview/project-overview.module').then(m => m.ProjectOverviewPageModule)
+        loadChildren: '../project-overview/project-overview.module#ProjectOverviewPageModule'
       },
       {
         path: 'pre-assets',
-        loadChildren: () => import('../pre-assets/pre-assets.module').then(m => m.PreAssetsPageModule)
+        loadChildren: '../pre-assets/pre-assets.module#PreAssetsPageModule'
       },
       {
         path: 'post-assets',
-        loadChildren: () => import('../post-assets/post-assets.module').then(m => m.PostAssetsPageModule)
+        loadChildren: '../post-assets/post-assets.module#PostAssetsPageModule'
       },
       {
         path: '',

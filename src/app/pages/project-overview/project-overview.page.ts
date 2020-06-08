@@ -32,7 +32,7 @@ export class ProjectOverviewPage implements OnInit {
   private postAssets: string[] = [];
   private isProjDetExists = false;
 
-  private edit = false;
+  public edit = false;
   constructor(public popoverCtrl: PopoverController,
     private formBuilder: FormBuilder,
     public navCtrl: NavController,
