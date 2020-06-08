@@ -25,7 +25,7 @@ export class ImagePage implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log(this.photo);
+    // console.log(this.photo);
   }
 
   closeModal() {
@@ -47,7 +47,7 @@ export class ImagePage implements OnInit {
             alert('Error deleting asset entry ' + err.message);
           });
         }
-      })
+      });
     }).catch((err) => {
       alert('Error deleting file ' + err.message);
     });

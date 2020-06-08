@@ -110,7 +110,7 @@ export class CreateProjectPage implements OnInit {
   }
 
   private async createDirectory(path: string, dirname: string) {
-    await this.file.checkDir(path, dirname).then(() => {
+    return await this.file.checkDir(path, dirname).then(() => {
       console.log('Directory ' + dirname + ' exists !!');
     }).catch(() => {
       console.log('Directory ' + dirname + ' does not exists !!, creating it !!');

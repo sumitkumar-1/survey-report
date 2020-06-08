@@ -9,6 +9,7 @@ import { PersistentService } from './persistent.service';
 import { Project } from '../interfaces/project';
 import { SQLiteObject } from '@ionic-native/sqlite/ngx';
 import { Base64 } from '@ionic-native/base64/ngx';
+import * as watermark from 'watermarkjs';
 
 const { Camera, Filesystem, Storage } = Plugins;
 
@@ -41,37 +42,58 @@ export class PhotoService {
       const newpath = this.persistentService.getStorageDir() + this.persistentService.getStorageSaveDir() + '/' +
         projectdata.projectname + '-' + projectdata.id + '/' + type + '/';
       const newfileName = new Date().getTime() + '.jpg';
-      this.file.moveFile(this.file.cacheDirectory, filename, newpath, newfileName).then(() => {
-        console.log('File Moved !!');
-        // add it to database
-        const projAsset: ProjectAssets = {
-          id: null,
-          projectid: projectdata.id,
-          assettype: type,
-          assetpath: newpath + newfileName
-        };
-        this.persistentService.dbDataSource.subscribe((db: SQLiteObject) => {
-          if (db != null) {
-            this.projectService.addProjectAssets(projAsset, db).then((res) => {
-              alert('Success: Image - ' + res.insertId + ' added sucessfully !!');
-              this.base64.encodeFile(projAsset.assetpath).then((based64File: string) => {
-                if (type === 'pre') {
-                  this.prePhotos.push({ id: res.insertId, filepath: projAsset.assetpath, webviewPath: '', base64: based64File });
-                } else if (type === 'post') {
-                  this.postPhotos.push({ id: res.insertId, filepath: projAsset.assetpath, webviewPath: '', base64: based64File });
-                }
-              }).catch((err) => {
-                console.log('Invalid Asset Path in Database');
-              });
-            }).catch((err) => {
-              console.log('DbError: ' + err);
+      // add it to database
+      const projAsset: ProjectAssets = {
+        id: null,
+        projectid: projectdata.id,
+        assettype: type,
+        assetpath: newpath + newfileName
+      };
+      watermark([Capacitor.convertFileSrc(capturedPhoto.path)])
+        .image(watermark.text.lowerRight(new Date().toLocaleString(), '65px Arial', '#fff', 0.8))
+        .then((imgsrc) => {
+          // console.log('WaterMark Image = ' + imgsrc.src);
+          const imgdata = this.b64toBlob(imgsrc.src.split(',')[1], 'image/jpeg');
+          this.file.writeFile(newpath, newfileName, imgdata).then(() => {
+            this.persistentService.dbDataSource.subscribe((db: SQLiteObject) => {
+              if (db != null) {
+                this.projectService.addProjectAssets(projAsset, db).then((res) => {
+                  alert('Success: Image - ' + res.insertId + ' added sucessfully !!');
+                  if (type === 'pre') {
+                    this.prePhotos.push({ id: res.insertId, filepath: projAsset.assetpath, webviewPath: '', base64: imgsrc.src });
+                  } else if (type === 'post') {
+                    this.postPhotos.push({ id: res.insertId, filepath: projAsset.assetpath, webviewPath: '', base64: imgsrc.src });
+                  }
+                }).catch((err) => {
+                  console.log('DbError: ' + err);
+                });
+              }
             });
-          }
+          }).catch((err) => {
+            console.log('Error Writing Files ' + err.message);
+          });
+        }).catch((err) => {
+          console.log('Failed to add WaterMark !!' + err);
         });
-      }).catch((err) => {
-        console.log('Error Moving Files ' + err.message);
-      });
     });
+  }
+
+  private b64toBlob(b64Data, contentType) {
+    contentType = contentType || '';
+    const sliceSize = 512;
+    const byteCharacters = atob(b64Data);
+    const byteArrays = [];
+    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+      const slice = byteCharacters.slice(offset, offset + sliceSize);
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+    const blob = new Blob(byteArrays, { type: contentType });
+    return blob;
   }
 
   public loadAssets(assettype: string) {
@@ -88,9 +110,15 @@ export class PhotoService {
               for (let i = 0; i < res.rows.length; i++) {
                 this.base64.encodeFile(res.rows.item(i).assetpath).then((based64File: string) => {
                   if (assettype === 'pre') {
-                    this.prePhotos.push({ id: res.rows.item(i).id, filepath: res.rows.item(i).assetpath, webviewPath: '', base64: based64File });
+                    this.prePhotos.push({
+                      id: res.rows.item(i).id, filepath: res.rows.item(i).assetpath,
+                      webviewPath: '', base64: based64File
+                    });
                   } else if (assettype === 'post') {
-                    this.postPhotos.push({ id: res.rows.item(i).id, filepath: res.rows.item(i).assetpath, webviewPath: '', base64: based64File });
+                    this.postPhotos.push({
+                      id: res.rows.item(i).id, filepath: res.rows.item(i).assetpath,
+                      webviewPath: '', base64: based64File
+                    });
                   }
                 }).catch((err) => {
                   console.log('Invalid Asset Path in Database');
