@@ -23,8 +23,9 @@
 
             <ion-item *ngFor="let item of exportFiles">
               <ion-label color="dark">{{item.name}}</ion-label>
-              <ion-buttons slot="end" style="zoom:1.6;" (click)="shareFile(item.path)">
-                <ion-icon name="share"></ion-icon>
+              <ion-buttons slot="end" style="zoom:1.6;">
+                <!--ion-icon name="open" style="margin-right: 3px;" (click)="openFile(item.path)"></ion-icon-->
+                <ion-icon name="share" (click)="shareFile(item.path)"></ion-icon>
               </ion-buttons>
             </ion-item>
           </ion-list>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { File } from '@ionic-native/file/ngx';
 import { PersistentService } from 'src/app/services/persistent.service';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { Users } from 'src/app/interfaces/Users';
 
 @Component({
@@ -16,6 +17,7 @@ export class ExportsPage implements OnInit {
 
   constructor(private file: File,
     private persistentService: PersistentService,
+    private fileOpener: FileOpener,
     private socialSharing: SocialSharing) { }
 
   ngOnInit() {
@@ -62,6 +64,15 @@ export class ExportsPage implements OnInit {
       alert('File Shared SuccessFully !!');
     }).catch((err) => {
       console.log('Failed to Share !!');
+    });
+  }
+
+  openFile(fileNamewithpath: string) {
+    console.log('Open File ' + fileNamewithpath);
+    this.fileOpener.open(fileNamewithpath, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet').then(() => {
+      console.log('File is Opened!!');
+    }).catch((err) => {
+      console.log('Failed to Opened!!' + err.message);
     });
   }
 

@@ -383,6 +383,7 @@ export class ProjectOverviewPage implements OnInit {
     }).catch((err) => {
       console.log('Unable to Create Excel File ' + err.message);
     });
+    alert('Exported SucessFully !!');
     console.log('Done Create Excel');
   }
 

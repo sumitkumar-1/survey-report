@@ -77,7 +77,7 @@ export class ProjectsPage {
               });
             }
             this._projects = items;
-            if(this._projects.length > 0) {
+            if (this._projects.length > 0) {
               this.isProjectsExists = true;
             }
           }
@@ -180,7 +180,11 @@ export class ProjectsPage {
     this.router.navigate(['phome'], navigationExtras);
   }
   createProject() {
-    this.navCtrl.navigateRoot('/create-project');
+    if (this._projects.length >= 0 && this._projects.length < 2) {
+      this.navCtrl.navigateRoot('/create-project');
+    } else {
+      alert('Can not create more than 2 Project using Demo App !!');
+    }
   }
 
 }

@@ -29,6 +29,7 @@ import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { Base64 } from '@ionic-native/base64/ngx';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+import { FileOpener } from '@ionic-native/file-opener/ngx';
 
 @NgModule({
   declarations: [AppComponent, NotificationsComponent],
@@ -56,6 +57,7 @@ import { SocialSharing } from '@ionic-native/social-sharing/ngx';
     File,
     Base64,
     SocialSharing,
+    FileOpener,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
